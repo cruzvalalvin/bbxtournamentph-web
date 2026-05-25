@@ -16,6 +16,7 @@ export const metadata: Metadata = {
   title: "BBXTournamentPH - Competitive Beyblade X Platform",
   description: "Tournament management, rankings, communities, and competitive ecosystem for Beyblade X players in the Philippines.",
   keywords: ["Beyblade X", "Tournament", "Philippines", "Competitive", "Esports"],
+  viewport: "width=device-width, initial-scale=1, maximum-scale=5",
 };
 
 export default function RootLayout({
@@ -26,9 +27,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased overflow-x-hidden`}
     >
-      <body className="min-h-full flex flex-col bg-dark-bg text-foreground">{children}</body>
+      <body className="min-h-full flex flex-col bg-dark-bg text-foreground overflow-x-hidden">{children}</body>
     </html>
   );
 }

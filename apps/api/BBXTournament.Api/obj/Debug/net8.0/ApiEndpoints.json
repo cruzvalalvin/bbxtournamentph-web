@@ -52,6 +52,120 @@
     ]
   },
   {
+    "ContainingType": "BBXTournament.Api.Controllers.CommunitiesController",
+    "Method": "CreateCommunity",
+    "RelativePath": "communities",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "BBXTournament.Application.Contracts.Communities.CreateCommunityRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "BBXTournament.Application.Contracts.Communities.CommunityResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "BBXTournament.Api.Controllers.CommunitiesController",
+    "Method": "GetAllCommunities",
+    "RelativePath": "communities",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[BBXTournament.Application.Contracts.Communities.CommunityResponse, BBXTournament.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "BBXTournament.Api.Controllers.CommunitiesController",
+    "Method": "GetCommunityById",
+    "RelativePath": "communities/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "BBXTournament.Application.Contracts.Communities.CommunityResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "BBXTournament.Api.Controllers.CommunitiesController",
+    "Method": "AddAdmin",
+    "RelativePath": "communities/{id}/admins",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "BBXTournament.Application.Contracts.Communities.AddCommunityAdminRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BBXTournament.Api.Controllers.CommunitiesController",
+    "Method": "RemoveAdmin",
+    "RelativePath": "communities/{id}/admins/{userId}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "userId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "BBXTournament.Api.Controllers.UsersController",
     "Method": "Me",
     "RelativePath": "users/me",

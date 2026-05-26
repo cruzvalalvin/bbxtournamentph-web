@@ -1,11 +1,11 @@
 # BBXTournamentPH Landing Page
 
-A modern, futuristic landing page for BBXTournamentPH - a competitive platform for Beyblade X tournaments in the Philippines.
+An official competitive Beyblade tournament and league platform for the Philippines.
 
 ## 🎨 Design Features
 
-- **Dark Esports Aesthetic**: Professional dark theme inspired by competitive gaming
-- **Neon Green Accents**: Vibrant neon green (#00ff41) accent colors throughout
+- **Dark Metallic Theme**: Premium competitive arena-inspired UI with professional esports presentation
+- **Amber/Gold Championship Accents**: Prestigious gold and amber tones representing tournament excellence
 - **Animated Grid Background**: Subtle pulsing grid pattern for depth
 - **Smooth Animations**: Hover effects and transitions on all interactive elements
 - **Mobile-First Responsive**: Fully responsive design that works on all devices
@@ -20,20 +20,30 @@ A modern, futuristic landing page for BBXTournamentPH - a competitive platform f
 
 ## 📦 Project Structure
 
+This project uses a **monorepo structure** with npm workspaces:
+
 ```
 bbxtournamentph/
-├── app/
-│   ├── globals.css          # Global styles and animations
-│   ├── layout.tsx           # Root layout with metadata
-│   └── page.tsx             # Main landing page
-├── components/
-│   ├── GridBackground.tsx   # Animated grid background
-│   ├── HeroSection.tsx      # Hero section with title and status
-│   ├── FeatureCards.tsx     # Feature preview cards
-│   ├── AlphaSection.tsx     # Closed alpha announcement
-│   └── Footer.tsx           # Footer with Discord button
-└── public/                  # Static assets
+├── apps/
+│   ├── web/                 # Frontend Next.js application
+│   │   ├── app/            # Next.js app directory
+│   │   ├── components/     # React components
+│   │   ├── public/         # Static assets
+│   │   └── package.json    # Web app dependencies
+│   │
+│   └── api/                # Backend API (placeholder)
+│       ├── package.json    # API dependencies
+│       └── README.md       # API documentation
+│
+├── docs/                   # Project documentation
+│   ├── README.md          # Documentation index
+│   └── monorepo-structure.md  # Monorepo details
+│
+├── package.json           # Root monorepo configuration
+└── README.md             # This file
 ```
+
+For detailed information about the monorepo structure, see [docs/monorepo-structure.md](docs/monorepo-structure.md).
 
 ## 🎯 Sections
 
@@ -75,14 +85,17 @@ Six feature cards showcasing:
 cd bbxtournamentph
 ```
 
-2. Install dependencies:
+2. Install dependencies (installs for all workspaces):
 ```bash
 npm install
 ```
 
 3. Run the development server:
 ```bash
+# Run frontend (web app)
 npm run dev
+# or specifically
+npm run dev:web
 ```
 
 4. Open [http://localhost:3000](http://localhost:3000) in your browser
@@ -90,25 +103,49 @@ npm run dev
 ### Build for Production
 
 ```bash
+# Build all apps
 npm run build
-npm start
+
+# Start frontend
+npm run start
+# or specifically
+npm run start:web
 ```
+
+### Monorepo Commands
+
+```bash
+# Run frontend dev server
+npm run dev:web
+
+# Run API dev server (when implemented)
+npm run dev:api
+
+# Build specific app
+npm run build:web
+npm run build:api
+
+# Lint all workspaces
+npm run lint
+```
+
+For more details on the monorepo structure, see [docs/monorepo-structure.md](docs/monorepo-structure.md).
 
 ## 🎨 Color Palette
 
-- **Background**: `#0a0a0a` (Dark)
+- **Background**: `#0a0a0a` (Dark metallic base)
 - **Card Background**: `#111111` (Slightly lighter dark)
 - **Border**: `#1a1a1a` (Subtle border)
-- **Neon Green**: `#00ff41` (Primary accent)
-- **Neon Green Dark**: `#00cc33` (Hover state)
+- **Championship Gold**: `#f59e0b` (Primary amber/gold accent)
+- **Championship Gold Dark**: `#d97706` (Hover state)
 - **Foreground**: `#ededed` (Light text)
 
 ## ✨ Custom Animations
 
 - **Grid Pulse**: Subtle pulsing animation on the background grid
 - **Hover Lift**: Cards lift up on hover with shadow
-- **Glow Effects**: Neon green glow on interactive elements
-- **Text Glow**: Subtle glow on important text
+- **Glow Effects**: Championship gold glow on interactive elements
+- **Text Glow**: Subtle amber glow on important text
 
 ## 📱 Responsive Breakpoints
 
@@ -122,7 +159,7 @@ npm start
 Edit the CSS variables in `app/globals.css`:
 ```css
 :root {
-  --neon-green: #00ff41;
+  --championship-gold: #f59e0b;
   --dark-bg: #0a0a0a;
   /* ... other variables */
 }

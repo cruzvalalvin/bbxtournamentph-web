@@ -1,23 +1,39 @@
 {
   "name": "bbxtournamentph-monorepo",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
+  "description": "BBXTournamentPH - Premier competitive Beyblade X tournament platform for the Philippines",
   "workspaces": [
     "apps/*"
   ],
   "scripts": {
     "dev": "npm run dev --workspace=@bbxtournamentph/web",
     "dev:web": "npm run dev --workspace=@bbxtournamentph/web",
-    "dev:api": "npm run dev --workspace=@bbxtournamentph/api",
-    "build": "npm run build --workspaces",
+    "build": "npm run build --workspace=@bbxtournamentph/web",
     "build:web": "npm run build --workspace=@bbxtournamentph/web",
-    "build:api": "npm run build --workspace=@bbxtournamentph/api",
     "start": "npm run start --workspace=@bbxtournamentph/web",
     "start:web": "npm run start --workspace=@bbxtournamentph/web",
-    "start:api": "npm run start --workspace=@bbxtournamentph/api",
-    "lint": "npm run lint --workspaces"
+    "lint": "npm run lint --workspace=@bbxtournamentph/web",
+    "lint:web": "npm run lint --workspace=@bbxtournamentph/web"
   },
   "devDependencies": {
     "typescript": "^5"
-  }
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/bbxtournamentph.git"
+  },
+  "keywords": [
+    "beyblade",
+    "tournament",
+    "esports",
+    "philippines",
+    "competitive"
+  ],
+  "author": "BBXTournamentPH Team",
+  "license": "UNLICENSED"
 }

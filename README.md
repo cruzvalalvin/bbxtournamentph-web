@@ -1,191 +1,207 @@
-# BBXTournamentPH Landing Page
+# BBXTournamentPH
 
-An official competitive Beyblade tournament and league platform for the Philippines.
+> **An official competitive Beyblade X tournament and league platform for the Philippines**
 
-## 🎨 Design Features
+[![Status](https://img.shields.io/badge/status-pre--alpha-yellow)](https://github.com/yourusername/bbxtournamentph)
+[![License](https://img.shields.io/badge/license-UNLICENSED-red)](LICENSE)
 
-- **Dark Metallic Theme**: Premium competitive arena-inspired UI with professional esports presentation
-- **Amber/Gold Championship Accents**: Prestigious gold and amber tones representing tournament excellence
-- **Animated Grid Background**: Subtle pulsing grid pattern for depth
-- **Smooth Animations**: Hover effects and transitions on all interactive elements
-- **Mobile-First Responsive**: Fully responsive design that works on all devices
-- **Modern Typography**: Clean, professional fonts with proper hierarchy
+A professional esports-level tournament management platform featuring dark metallic design with championship gold accents, built for the Philippine Beyblade X competitive community.
 
-## 🚀 Tech Stack
+## 🎯 Overview
 
-- **Next.js 15** - React framework with App Router
-- **TypeScript** - Type-safe development
-- **TailwindCSS** - Utility-first CSS framework
-- **Geist Font** - Modern sans-serif and monospace fonts
+BBXTournamentPH provides a complete ecosystem for competitive Beyblade X tournaments, including:
 
-## 📦 Project Structure
+- **Tournament Management**: Swiss, Round Robin, and Single Elimination formats
+- **Live Match Tracking**: Real-time bracket updates and results
+- **Player Rankings**: ELO-based ranking system with seasonal leaderboards
+- **Judge System**: Mobile-optimized match input interface
+- **Community Features**: League management and community rankings
 
-This project uses a **monorepo structure** with npm workspaces:
+## 🏗️ Architecture
+
+This project uses a **monorepo structure** with clear separation between frontend and backend:
 
 ```
 bbxtournamentph/
 ├── apps/
-│   ├── web/                 # Frontend Next.js application
-│   │   ├── app/            # Next.js app directory
-│   │   ├── components/     # React components
-│   │   ├── public/         # Static assets
-│   │   └── package.json    # Web app dependencies
+│   ├── web/                    # Next.js frontend
+│   │   ├── app/               # Next.js App Router
+│   │   ├── components/        # Shared UI components
+│   │   ├── features/          # Feature modules
+│   │   ├── services/          # API clients
+│   │   ├── hooks/             # Custom React hooks
+│   │   ├── types/             # TypeScript definitions
+│   │   └── styles/            # Global styles
 │   │
-│   └── api/                # Backend API (placeholder)
-│       ├── package.json    # API dependencies
-│       └── README.md       # API documentation
+│   └── api/                   # ASP.NET Core backend
+│       ├── BBXTournament.Api/           # API layer
+│       ├── BBXTournament.Application/   # Business logic
+│       ├── BBXTournament.Domain/        # Domain models
+│       └── BBXTournament.Infrastructure/ # Data access
 │
-├── docs/                   # Project documentation
-│   ├── README.md          # Documentation index
-│   └── monorepo-structure.md  # Monorepo details
-│
-├── package.json           # Root monorepo configuration
-└── README.md             # This file
+├── docs/                      # Comprehensive documentation
+└── package.json              # Monorepo configuration
 ```
 
-For detailed information about the monorepo structure, see [docs/monorepo-structure.md](docs/monorepo-structure.md).
+## 🚀 Tech Stack
 
-## 🎯 Sections
+### Frontend
+- **Next.js 15** - React framework with App Router
+- **TypeScript** - Type-safe development
+- **TailwindCSS 4** - Utility-first CSS framework
+- **React 19** - Latest React features
 
-### Hero Section
-- Main title: "BBXTournamentPH"
-- Subtitle: "Competitive Platform for Beyblade X"
-- Status badges: "UNDER CONSTRUCTION" and "CLOSED ALPHA COMING SOON"
-- Description of the platform
+### Backend
+- **ASP.NET Core 8.0** - High-performance web framework
+- **Entity Framework Core** - ORM for database access
+- **SQL Server** - Relational database
+- **Clean Architecture** - Maintainable, scalable structure
 
-### Feature Preview Cards
-Six feature cards showcasing:
-1. Live Tournament Brackets
-2. Judge Match System
-3. Community Rankings
-4. Player Profiles
-5. Tournament Seasons
-6. Real-Time Match Tracking
+## 🎨 Design System
 
-### Closed Alpha Section
-- "Forged for the community, by the community" message
-- Alpha build badge
-- Community-focused messaging
+- **Dark Metallic Theme**: Professional competitive arena aesthetic
+- **Championship Gold**: Amber/gold accents (#f59e0b) for primary actions
+- **Modern Typography**: Geist Sans and Geist Mono fonts
+- **Responsive Design**: Mobile-first approach
+- **Smooth Animations**: Professional transitions and hover effects
 
-### Footer
-- Brand information
-- Discord button (placeholder)
-- Copyright information
+See [Branding Guide](docs/branding.md) for complete design specifications.
+
+## 📚 Documentation
+
+Comprehensive documentation is available in the `/docs` directory:
+
+- **[Architecture](docs/architecture.md)** - System design and technical decisions
+- **[Roadmap](docs/roadmap.md)** - Development phases and milestones
+- **[Backend Rules](docs/backend-rules.md)** - ASP.NET Core best practices
+- **[Frontend Rules](docs/frontend-rules.md)** - Next.js/React guidelines
+- **[Tournament System](docs/tournament-system.md)** - Tournament formats and management
+- **[Ranking System](docs/ranking-system.md)** - ELO ratings and leaderboards
+- **[Branding Guide](docs/branding.md)** - Visual identity and design system
+
+## ✨ Features
+
+### Current (Landing Page)
+- ✅ Professional dark metallic design
+- ✅ Championship gold accents
+- ✅ Responsive mobile-first layout
+- ✅ Animated grid background
+- ✅ Feature preview cards
+- ✅ Alpha status messaging
+
+### Planned (See [Roadmap](docs/roadmap.md))
+- 🚧 Tournament management (Swiss, Round Robin, Single Elimination)
+- 🚧 Real-time match tracking
+- 🚧 Judge interface for mobile match input
+- 🚧 Player rankings and statistics
+- 🚧 Community and league management
+- 🚧 Authentication and authorization
 
 ## 🛠️ Getting Started
 
 ### Prerequisites
-- Node.js 18+ installed
-- npm or yarn package manager
+- **Node.js 18+** - For frontend development
+- **.NET 8.0 SDK** - For backend development (optional)
+- **SQL Server** - For database (optional, for backend)
 
-### Installation
+### Frontend Development
 
-1. Navigate to the project directory:
 ```bash
-cd bbxtournamentph
-```
-
-2. Install dependencies (installs for all workspaces):
-```bash
+# Install dependencies
 npm install
-```
 
-3. Run the development server:
-```bash
-# Run frontend (web app)
+# Run development server
 npm run dev
-# or specifically
-npm run dev:web
-```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser
-
-### Build for Production
-
-```bash
-# Build all apps
+# Build for production
 npm run build
 
-# Start frontend
-npm run start
-# or specifically
-npm run start:web
+# Start production server
+npm start
 ```
 
-### Monorepo Commands
+The frontend will be available at [http://localhost:3000](http://localhost:3000)
+
+### Backend Development
 
 ```bash
-# Run frontend dev server
-npm run dev:web
+# Navigate to API directory
+cd apps/api
 
-# Run API dev server (when implemented)
-npm run dev:api
+# Restore dependencies
+dotnet restore
 
-# Build specific app
-npm run build:web
-npm run build:api
-
-# Lint all workspaces
-npm run lint
+# Run the API
+dotnet run --project BBXTournament.Api
 ```
 
-For more details on the monorepo structure, see [docs/monorepo-structure.md](docs/monorepo-structure.md).
+The API will be available at:
+- HTTPS: `https://localhost:7001`
+- HTTP: `http://localhost:5001`
+- Swagger: `https://localhost:7001/swagger`
 
-## 🎨 Color Palette
+See [apps/api/README.md](apps/api/README.md) for detailed backend setup.
 
-- **Background**: `#0a0a0a` (Dark metallic base)
-- **Card Background**: `#111111` (Slightly lighter dark)
-- **Border**: `#1a1a1a` (Subtle border)
-- **Championship Gold**: `#f59e0b` (Primary amber/gold accent)
-- **Championship Gold Dark**: `#d97706` (Hover state)
-- **Foreground**: `#ededed` (Light text)
+## 🎨 Design System
 
-## ✨ Custom Animations
+### Color Palette
+- **Championship Gold**: `#f59e0b` - Primary actions and highlights
+- **Dark Metallic**: `#0a0a0a` - Main background
+- **Card Background**: `#111111` - Elevated surfaces
+- **Border**: `#1a1a1a` - Subtle dividers
+- **Text Primary**: `#ededed` - Main text color
 
-- **Grid Pulse**: Subtle pulsing animation on the background grid
-- **Hover Lift**: Cards lift up on hover with shadow
-- **Glow Effects**: Championship gold glow on interactive elements
-- **Text Glow**: Subtle amber glow on important text
+See [docs/branding.md](docs/branding.md) for complete design specifications.
 
-## 📱 Responsive Breakpoints
+## 🚀 Deployment
 
-- **Mobile**: < 768px
-- **Tablet**: 768px - 1024px
-- **Desktop**: > 1024px
+### Frontend (Vercel)
+The frontend is deployed on Vercel and automatically deploys from the main branch.
 
-## 🔧 Customization
-
-### Changing Colors
-Edit the CSS variables in `app/globals.css`:
-```css
-:root {
-  --championship-gold: #f59e0b;
-  --dark-bg: #0a0a0a;
-  /* ... other variables */
-}
+```bash
+# Vercel will automatically detect Next.js and deploy from apps/web
 ```
 
-### Adding New Features
-Add new feature cards in `components/FeatureCards.tsx`:
-```typescript
-const features: Feature[] = [
-  {
-    title: "Your Feature",
-    description: "Feature description",
-    icon: "🎯",
-  },
-  // ... more features
-];
-```
+### Backend (Future)
+Backend deployment will be configured for Azure App Service or AWS Elastic Beanstalk.
+
+## 🤝 Contributing
+
+We welcome contributions from the community!
+
+### Development Workflow
+1. Read the [Architecture](docs/architecture.md) documentation
+2. Follow [Frontend Rules](docs/frontend-rules.md) or [Backend Rules](docs/backend-rules.md)
+3. Check the [Roadmap](docs/roadmap.md) for current priorities
+4. Submit pull requests with clear descriptions
+
+### Code Standards
+- TypeScript for frontend
+- C# for backend
+- Follow established patterns
+- Write clean, maintainable code
+- Document complex logic
 
 ## 📄 License
 
 © 2026 BBXTournamentPH. All rights reserved.
 
-## 🤝 Contributing
+## 🔗 Links
 
-This is a community-driven project. Contributions are welcome!
+- **Documentation**: [/docs](docs/)
+- **Frontend**: [/apps/web](apps/web/)
+- **Backend**: [/apps/api](apps/api/)
+- **Live Site**: [https://bbxtournamentph.vercel.app](https://bbxtournamentph.vercel.app)
+
+## 📞 Contact
+
+For questions, suggestions, or feedback:
+- Open an issue on GitHub
+- Join our Discord community (coming soon)
+- Email: contact@bbxtournamentph.com (coming soon)
 
 ---
 
-Made with ⚡ for the Philippine Beyblade X community
+**Built with ⚡ for the Philippine Beyblade X competitive community**
+
+*Empowering bladers through fair competition and professional tournament management*

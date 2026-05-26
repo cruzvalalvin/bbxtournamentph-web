@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BBXTournament.Infrastructure")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b28f510ac8e74a58e01bed664622791bee6ad51a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+97ad2facb3858385ba58af6984cb3f87f7705fa5")]
 [assembly: System.Reflection.AssemblyProductAttribute("BBXTournament.Infrastructure")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BBXTournament.Infrastructure")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -57,17 +57,21 @@ builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
+// Apply migrations and ensure database is created
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    dbContext.Database.EnsureCreated();
     dbContext.Database.Migrate();
 }
+
+// Enable Swagger in all environments for alpha development
+app.UseSwagger();
+app.UseSwaggerUI(options =>
+{
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "BBXTournamentPH API v1");
+    options.RoutePrefix = string.Empty; // Serve Swagger UI at root
+});
 
 app.UseHttpsRedirection();
 app.UseCors("AllowFrontend");

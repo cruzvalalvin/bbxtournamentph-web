@@ -1,0 +1,12 @@
+C:\Users\ValAlvinCruz\Desktop\bbxtournamentph\apps\api\BBXTournament.Domain\bin\Debug\net8.0\BBXTournament.Domain.deps.json
+C:\Users\ValAlvinCruz\Desktop\bbxtournamentph\apps\api\BBXTournament.Domain\bin\Debug\net8.0\BBXTournament.Domain.dll
+C:\Users\ValAlvinCruz\Desktop\bbxtournamentph\apps\api\BBXTournament.Domain\bin\Debug\net8.0\BBXTournament.Domain.pdb
+C:\Users\ValAlvinCruz\Desktop\bbxtournamentph\apps\api\BBXTournament.Domain\obj\Debug\net8.0\BBXTournament.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ValAlvinCruz\Desktop\bbxtournamentph\apps\api\BBXTournament.Domain\obj\Debug\net8.0\BBXTournament.Domain.AssemblyInfoInputs.cache
+C:\Users\ValAlvinCruz\Desktop\bbxtournamentph\apps\api\BBXTournament.Domain\obj\Debug\net8.0\BBXTournament.Domain.AssemblyInfo.cs
+C:\Users\ValAlvinCruz\Desktop\bbxtournamentph\apps\api\BBXTournament.Domain\obj\Debug\net8.0\BBXTournament.Domain.csproj.CoreCompileInputs.cache
+C:\Users\ValAlvinCruz\Desktop\bbxtournamentph\apps\api\BBXTournament.Domain\obj\Debug\net8.0\BBXTournament.Domain.sourcelink.json
+C:\Users\ValAlvinCruz\Desktop\bbxtournamentph\apps\api\BBXTournament.Domain\obj\Debug\net8.0\BBXTournament.Domain.dll
+C:\Users\ValAlvinCruz\Desktop\bbxtournamentph\apps\api\BBXTournament.Domain\obj\Debug\net8.0\refint\BBXTournament.Domain.dll
+C:\Users\ValAlvinCruz\Desktop\bbxtournamentph\apps\api\BBXTournament.Domain\obj\Debug\net8.0\BBXTournament.Domain.pdb
+C:\Users\ValAlvinCruz\Desktop\bbxtournamentph\apps\api\BBXTournament.Domain\obj\Debug\net8.0\ref\BBXTournament.Domain.dll

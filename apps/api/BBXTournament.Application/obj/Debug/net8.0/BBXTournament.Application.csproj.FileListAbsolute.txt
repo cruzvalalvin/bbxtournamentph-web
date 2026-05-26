@@ -1,0 +1,16 @@
+C:\Users\ValAlvinCruz\Desktop\bbxtournamentph\apps\api\BBXTournament.Application\bin\Debug\net8.0\BBXTournament.Application.deps.json
+C:\Users\ValAlvinCruz\Desktop\bbxtournamentph\apps\api\BBXTournament.Application\bin\Debug\net8.0\BBXTournament.Application.dll
+C:\Users\ValAlvinCruz\Desktop\bbxtournamentph\apps\api\BBXTournament.Application\bin\Debug\net8.0\BBXTournament.Application.pdb
+C:\Users\ValAlvinCruz\Desktop\bbxtournamentph\apps\api\BBXTournament.Application\bin\Debug\net8.0\BBXTournament.Domain.dll
+C:\Users\ValAlvinCruz\Desktop\bbxtournamentph\apps\api\BBXTournament.Application\bin\Debug\net8.0\BBXTournament.Domain.pdb
+C:\Users\ValAlvinCruz\Desktop\bbxtournamentph\apps\api\BBXTournament.Application\obj\Debug\net8.0\BBXTournament.Application.csproj.AssemblyReference.cache
+C:\Users\ValAlvinCruz\Desktop\bbxtournamentph\apps\api\BBXTournament.Application\obj\Debug\net8.0\BBXTournament.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ValAlvinCruz\Desktop\bbxtournamentph\apps\api\BBXTournament.Application\obj\Debug\net8.0\BBXTournament.Application.AssemblyInfoInputs.cache
+C:\Users\ValAlvinCruz\Desktop\bbxtournamentph\apps\api\BBXTournament.Application\obj\Debug\net8.0\BBXTournament.Application.AssemblyInfo.cs
+C:\Users\ValAlvinCruz\Desktop\bbxtournamentph\apps\api\BBXTournament.Application\obj\Debug\net8.0\BBXTournament.Application.csproj.CoreCompileInputs.cache
+C:\Users\ValAlvinCruz\Desktop\bbxtournamentph\apps\api\BBXTournament.Application\obj\Debug\net8.0\BBXTournament.Application.sourcelink.json
+C:\Users\ValAlvinCruz\Desktop\bbxtournamentph\apps\api\BBXTournament.Application\obj\Debug\net8.0\BBXTourn.198CCF48.Up2Date
+C:\Users\ValAlvinCruz\Desktop\bbxtournamentph\apps\api\BBXTournament.Application\obj\Debug\net8.0\BBXTournament.Application.dll
+C:\Users\ValAlvinCruz\Desktop\bbxtournamentph\apps\api\BBXTournament.Application\obj\Debug\net8.0\refint\BBXTournament.Application.dll
+C:\Users\ValAlvinCruz\Desktop\bbxtournamentph\apps\api\BBXTournament.Application\obj\Debug\net8.0\BBXTournament.Application.pdb
+C:\Users\ValAlvinCruz\Desktop\bbxtournamentph\apps\api\BBXTournament.Application\obj\Debug\net8.0\ref\BBXTournament.Application.dll

@@ -1,24 +1,58 @@
 @import "tailwindcss";
 
 :root {
+  /* Dark Metallic Arena Theme */
   --background: #0a0a0a;
-  --foreground: #ededed;
-  --neon-green: #00ff41;
-  --neon-green-dark: #00cc33;
+  --foreground: #ffffff;
+  
+  /* Gunmetal & Black Backgrounds */
   --dark-bg: #0a0a0a;
-  --dark-card: #111111;
-  --dark-border: #1a1a1a;
+  --gunmetal: #1a1d23;
+  --gunmetal-light: #252931;
+  --dark-card: #141619;
+  --dark-border: #2a2d35;
+  
+  /* Electric Amber Accents (Primary) */
+  --amber-primary: #ffb020;
+  --amber-bright: #ffc850;
+  --amber-dark: #e69500;
+  --amber-glow: rgba(255, 176, 32, 0.4);
+  
+  /* Alternative: Electric Cyan (if preferred) */
+  --cyan-primary: #00d9ff;
+  --cyan-bright: #4dffff;
+  --cyan-dark: #00a8cc;
+  
+  /* Metallic Accents */
+  --metal-silver: #c0c5ce;
+  --metal-gold: #d4af37;
+  --metal-steel: #8b92a0;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-neon-green: var(--neon-green);
-  --color-neon-green-dark: var(--neon-green-dark);
+  
+  /* Arena Theme Colors */
   --color-dark-bg: var(--dark-bg);
+  --color-gunmetal: var(--gunmetal);
+  --color-gunmetal-light: var(--gunmetal-light);
   --color-dark-card: var(--dark-card);
   --color-dark-border: var(--dark-border);
-  --font-sans: var(--font-geist-sans);
+  
+  /* Amber Accent System */
+  --color-amber-primary: var(--amber-primary);
+  --color-amber-bright: var(--amber-bright);
+  --color-amber-dark: var(--amber-dark);
+  
+  /* Metallic Accents */
+  --color-metal-silver: var(--metal-silver);
+  --color-metal-gold: var(--metal-gold);
+  --color-metal-steel: var(--metal-steel);
+  
+  /* Typography */
+  --font-display: var(--font-rajdhani);
+  --font-sans: var(--font-inter);
   --font-mono: var(--font-geist-mono);
 }
 
@@ -34,64 +68,133 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Custom scrollbar */
+/* Custom scrollbar - Arena Style */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-track {
   background: var(--dark-bg);
+  border-left: 1px solid var(--dark-border);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--neon-green);
-  border-radius: 4px;
+  background: linear-gradient(180deg, var(--amber-primary), var(--amber-dark));
+  border-radius: 5px;
+  border: 2px solid var(--dark-bg);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--neon-green-dark);
+  background: linear-gradient(180deg, var(--amber-bright), var(--amber-primary));
 }
 
-/* Animated grid background */
-@keyframes grid-pulse {
+/* Arena Grid Background */
+@keyframes arena-pulse {
   0%, 100% {
-    opacity: 0.1;
+    opacity: 0.08;
   }
   50% {
-    opacity: 0.2;
+    opacity: 0.15;
   }
 }
 
-.grid-background {
-  background-image: 
-    linear-gradient(rgba(0, 255, 65, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 255, 65, 0.05) 1px, transparent 1px);
-  background-size: 50px 50px;
-  animation: grid-pulse 4s ease-in-out infinite;
+@keyframes scan-line {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100vh);
+  }
 }
 
-/* Glow effects */
-.glow-green {
-  box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+.arena-grid {
+  background-image:
+    linear-gradient(rgba(255, 176, 32, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 176, 32, 0.06) 1px, transparent 1px);
+  background-size: 60px 60px;
+  animation: arena-pulse 6s ease-in-out infinite;
 }
 
-.glow-green-strong {
-  box-shadow: 0 0 30px rgba(0, 255, 65, 0.5);
+/* Metallic Glow Effects - Subtle and Premium */
+.glow-amber {
+  box-shadow: 0 0 10px rgba(255, 176, 32, 0.08);
 }
 
-/* Text glow */
-.text-glow {
-  text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+.glow-amber-strong {
+  box-shadow: 0 0 15px rgba(255, 176, 32, 0.12), 0 0 25px rgba(255, 176, 32, 0.06);
 }
 
-/* Hover animations */
-.hover-lift {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+/* Text Effects - Reduced Glow */
+.text-glow-amber {
+  text-shadow: 0 0 12px rgba(255, 176, 32, 0.15);
 }
 
-.hover-lift:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(0, 255, 65, 0.2);
+.text-metallic {
+  background: linear-gradient(135deg, var(--metal-silver) 0%, var(--foreground) 50%, var(--metal-silver) 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Tournament Broadcast Style Animations */
+.hover-lift-arena {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+}
+
+.hover-lift-arena:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(255, 176, 32, 0.1);
+}
+
+/* Metallic Border Effect */
+.border-metallic {
+  border-image: linear-gradient(135deg, var(--dark-border), var(--amber-primary), var(--dark-border)) 1;
+}
+
+/* Arena Scan Line Effect */
+.scan-line {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--amber-primary), transparent);
+  opacity: 0.3;
+  animation: scan-line 8s linear infinite;
+  pointer-events: none;
+}
+
+/* Premium Card Shine Effect */
+@keyframes card-shine {
+  0% {
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+  }
+  100% {
+    transform: translateX(100%) translateY(100%) rotate(45deg);
+  }
+}
+
+.card-shine {
+  position: relative;
+  overflow: hidden;
+}
+
+.card-shine::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 176, 32, 0.1) 50%,
+    transparent 70%
+  );
+  transform: translateX(-100%) translateY(-100%) rotate(45deg);
+}
+
+.card-shine:hover::before {
+  animation: card-shine 1.5s ease-in-out;
 }
 
 /* Made with Bob */

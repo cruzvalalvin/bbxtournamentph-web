@@ -61,6 +61,11 @@ namespace BBXTournament.Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("PublicCode")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Region")
                         .HasMaxLength(100)
                         .HasColumnType("TEXT");
@@ -76,6 +81,9 @@ namespace BBXTournament.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("OwnerId");
+
+                    b.HasIndex("PublicCode")
+                        .IsUnique();
 
                     b.HasIndex("Slug")
                         .IsUnique();
@@ -136,6 +144,284 @@ namespace BBXTournament.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("CommunityMembers", (string)null);
+                });
+
+            modelBuilder.Entity("BBXTournament.Domain.Entities.Match", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsBye")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<Guid?>("LoserId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("MatchNumber")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<Guid?>("Player1Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid?>("Player2Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("RoundNumber")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("Score1")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("Score2")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("TournamentStageId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid?>("WinnerId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LoserId");
+
+                    b.HasIndex("Player1Id");
+
+                    b.HasIndex("Player2Id");
+
+                    b.HasIndex("TournamentStageId");
+
+                    b.HasIndex("WinnerId");
+
+                    b.ToTable("Matches", (string)null);
+                });
+
+            modelBuilder.Entity("BBXTournament.Domain.Entities.Standing", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("Buchholz")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Draws")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("HeadToHeadScore")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Losses")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("MatchPoints")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("MedianBuchholz")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("ParticipantId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("PointDifference")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Rank")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<Guid>("TournamentStageId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Wins")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParticipantId");
+
+                    b.HasIndex("TournamentStageId", "ParticipantId")
+                        .IsUnique();
+
+                    b.ToTable("Standings", (string)null);
+                });
+
+            modelBuilder.Entity("BBXTournament.Domain.Entities.Tournament", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("City")
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("CommunityId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("CreatedById")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasDefaultValue(false);
+
+                    b.Property<int>("MaxParticipants")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Province")
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PublicCode")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Region")
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CommunityId");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("PublicCode")
+                        .IsUnique();
+
+                    b.ToTable("Tournaments", (string)null);
+                });
+
+            modelBuilder.Entity("BBXTournament.Domain.Entities.TournamentParticipant", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("CheckedIn")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsManualEntry")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsPaid")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("Seed")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("TeamName")
+                        .HasMaxLength(150)
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("TournamentId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TournamentId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("TournamentParticipants", (string)null);
+                });
+
+            modelBuilder.Entity("BBXTournament.Domain.Entities.TournamentStage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("AdvanceCount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("FormatType")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("GroupCount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("HasGrandFinalReset")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("HasThirdPlaceMatch")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("NumberOfRounds")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("StageOrder")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("TournamentId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TournamentId", "StageOrder")
+                        .IsUnique();
+
+                    b.ToTable("TournamentStages", (string)null);
                 });
 
             modelBuilder.Entity("BBXTournament.Domain.Entities.User", b =>
@@ -241,11 +527,131 @@ namespace BBXTournament.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("BBXTournament.Domain.Entities.Match", b =>
+                {
+                    b.HasOne("BBXTournament.Domain.Entities.TournamentParticipant", "Loser")
+                        .WithMany()
+                        .HasForeignKey("LoserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("BBXTournament.Domain.Entities.TournamentParticipant", "Player1")
+                        .WithMany()
+                        .HasForeignKey("Player1Id")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("BBXTournament.Domain.Entities.TournamentParticipant", "Player2")
+                        .WithMany()
+                        .HasForeignKey("Player2Id")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("BBXTournament.Domain.Entities.TournamentStage", "TournamentStage")
+                        .WithMany("Matches")
+                        .HasForeignKey("TournamentStageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BBXTournament.Domain.Entities.TournamentParticipant", "Winner")
+                        .WithMany()
+                        .HasForeignKey("WinnerId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Loser");
+
+                    b.Navigation("Player1");
+
+                    b.Navigation("Player2");
+
+                    b.Navigation("TournamentStage");
+
+                    b.Navigation("Winner");
+                });
+
+            modelBuilder.Entity("BBXTournament.Domain.Entities.Standing", b =>
+                {
+                    b.HasOne("BBXTournament.Domain.Entities.TournamentParticipant", "Participant")
+                        .WithMany()
+                        .HasForeignKey("ParticipantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("BBXTournament.Domain.Entities.TournamentStage", "TournamentStage")
+                        .WithMany("Standings")
+                        .HasForeignKey("TournamentStageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Participant");
+
+                    b.Navigation("TournamentStage");
+                });
+
+            modelBuilder.Entity("BBXTournament.Domain.Entities.Tournament", b =>
+                {
+                    b.HasOne("BBXTournament.Domain.Entities.Community", "Community")
+                        .WithMany()
+                        .HasForeignKey("CommunityId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("BBXTournament.Domain.Entities.User", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Community");
+
+                    b.Navigation("CreatedBy");
+                });
+
+            modelBuilder.Entity("BBXTournament.Domain.Entities.TournamentParticipant", b =>
+                {
+                    b.HasOne("BBXTournament.Domain.Entities.Tournament", "Tournament")
+                        .WithMany("Participants")
+                        .HasForeignKey("TournamentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BBXTournament.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Tournament");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("BBXTournament.Domain.Entities.TournamentStage", b =>
+                {
+                    b.HasOne("BBXTournament.Domain.Entities.Tournament", "Tournament")
+                        .WithMany("Stages")
+                        .HasForeignKey("TournamentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Tournament");
+                });
+
             modelBuilder.Entity("BBXTournament.Domain.Entities.Community", b =>
                 {
                     b.Navigation("Admins");
 
                     b.Navigation("Members");
+                });
+
+            modelBuilder.Entity("BBXTournament.Domain.Entities.Tournament", b =>
+                {
+                    b.Navigation("Participants");
+
+                    b.Navigation("Stages");
+                });
+
+            modelBuilder.Entity("BBXTournament.Domain.Entities.TournamentStage", b =>
+                {
+                    b.Navigation("Matches");
+
+                    b.Navigation("Standings");
                 });
 #pragma warning restore 612, 618
         }

@@ -39,6 +39,11 @@ public class CommunityRepository : ICommunityRepository
             .ToListAsync(cancellationToken);
     }
 
+    public async Task<int> GetCommunityCountAsync(CancellationToken cancellationToken = default)
+    {
+        return await _dbContext.Communities.CountAsync(cancellationToken);
+    }
+
     public async Task<bool> SlugExistsAsync(string slug, CancellationToken cancellationToken = default)
     {
         return await _dbContext.Communities

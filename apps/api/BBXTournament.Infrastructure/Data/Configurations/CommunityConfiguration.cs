@@ -12,6 +12,13 @@ public class CommunityConfiguration : IEntityTypeConfiguration<Community>
 
         builder.HasKey(c => c.Id);
 
+        builder.Property(c => c.PublicCode)
+            .IsRequired()
+            .HasMaxLength(20);
+
+        builder.HasIndex(c => c.PublicCode)
+            .IsUnique();
+
         builder.Property(c => c.Name)
             .IsRequired()
             .HasMaxLength(200);

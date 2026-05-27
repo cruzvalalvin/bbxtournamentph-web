@@ -7,6 +7,7 @@ public interface ICommunityRepository
     Task<Community?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
     Task<Community?> GetBySlugAsync(string slug, CancellationToken cancellationToken = default);
     Task<List<Community>> GetAllAsync(CancellationToken cancellationToken = default);
+    Task<int> GetCommunityCountAsync(CancellationToken cancellationToken = default);
     Task<bool> SlugExistsAsync(string slug, CancellationToken cancellationToken = default);
     Task AddAsync(Community community, CancellationToken cancellationToken = default);
     Task<CommunityAdmin?> GetAdminAsync(Guid communityId, Guid userId, CancellationToken cancellationToken = default);

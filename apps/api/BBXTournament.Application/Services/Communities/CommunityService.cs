@@ -1,4 +1,3 @@
-using BBXTournament.Application.Contracts.Auth;
 using BBXTournament.Application.Contracts.Communities;
 using BBXTournament.Application.Interfaces.Communities;
 using BBXTournament.Domain.Entities;
@@ -38,6 +37,12 @@ public class CommunityService : ICommunityService
             request.City);
 
         await _communityRepository.AddAsync(community, cancellationToken);
+        await _communityRepository.SaveChangesAsync(cancellationToken);
+
+        // Generate PublicCode after save to ensure we have the ID
+        var count = await _communityRepository.GetCommunityCountAsync(cancellationToken);
+        var publicCode = $"COM-{count:D4}";
+        community.SetPublicCode(publicCode);
         await _communityRepository.SaveChangesAsync(cancellationToken);
 
         // Reload with owner
@@ -120,31 +125,13 @@ public class CommunityService : ICommunityService
         return new CommunityResponse
         {
             Id = community.Id,
+            PublicCode = community.PublicCode,
             Name = community.Name,
             Slug = community.Slug,
-            Description = community.Description,
-            LogoUrl = community.LogoUrl,
-            BannerUrl = community.BannerUrl,
             Region = community.Region,
             Province = community.Province,
             City = community.City,
-            OwnerId = community.OwnerId,
-            Owner = community.Owner is not null ? new UserResponse
-            {
-                Id = community.Owner.Id,
-                DisplayName = community.Owner.DisplayName,
-                Email = community.Owner.Email,
-                Role = community.Owner.Role,
-                Region = community.Owner.Region,
-                Province = community.Owner.Province,
-                City = community.Owner.City,
-                IsActive = community.Owner.IsActive,
-                CreatedAt = community.Owner.CreatedAt
-            } : null,
-            IsVerified = community.IsVerified,
-            IsActive = community.IsActive,
-            CreatedAt = community.CreatedAt,
-            UpdatedAt = community.UpdatedAt
+            IsVerified = community.IsVerified
         };
     }
 }

@@ -3,6 +3,7 @@ namespace BBXTournament.Domain.Entities;
 public class Community
 {
     public Guid Id { get; private set; }
+    public string PublicCode { get; private set; } = string.Empty;
     public string Name { get; private set; }
     public string Slug { get; private set; }
     public string Description { get; private set; }
@@ -41,6 +42,7 @@ public class Community
         string? city = null)
     {
         Id = Guid.NewGuid();
+        PublicCode = string.Empty; // Will be set after save to get proper sequence
         Name = name.Trim();
         Slug = slug.Trim().ToLowerInvariant();
         Description = description.Trim();
@@ -54,6 +56,15 @@ public class Community
         IsActive = true;
         CreatedAt = DateTime.UtcNow;
         UpdatedAt = DateTime.UtcNow;
+    }
+
+    public void SetPublicCode(string publicCode)
+    {
+        if (string.IsNullOrWhiteSpace(publicCode))
+        {
+            throw new ArgumentException("Public code cannot be empty.", nameof(publicCode));
+        }
+        PublicCode = publicCode.Trim();
     }
 
     public void Update(

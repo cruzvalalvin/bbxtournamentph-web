@@ -1,5 +1,6 @@
 using BBXTournament.Application.Interfaces.Auth;
 using BBXTournament.Application.Interfaces.Communities;
+using BBXTournament.Application.Interfaces.Tournaments;
 using BBXTournament.Infrastructure.Auth;
 using BBXTournament.Infrastructure.Data;
 using BBXTournament.Infrastructure.Repositories;
@@ -49,6 +50,7 @@ public static class DependencyInjection
 
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<ICommunityRepository, CommunityRepository>();
+        services.AddScoped<ITournamentRepository, TournamentRepository>();
         services.AddScoped<IPasswordHasher, PasswordHasher>();
         services.AddScoped<ITokenGenerator, JwtTokenGenerator>();
 

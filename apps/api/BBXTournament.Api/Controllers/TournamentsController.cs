@@ -147,6 +147,110 @@ public class TournamentsController : ControllerBase
         return Ok(participants);
     }
 
+    [HttpPatch("participants/{participantId}/checkin")]
+    [Authorize]
+    public async Task<IActionResult> CheckInParticipant(
+        Guid participantId,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            await _tournamentService.CheckInParticipantAsync(
+                participantId,
+                GetUserId(),
+                GetUserRole(),
+                cancellationToken);
+
+            return NoContent();
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new { error = ex.Message });
+        }
+        catch (UnauthorizedAccessException)
+        {
+            return Forbid();
+        }
+    }
+
+    [HttpPatch("participants/{participantId}/checkout")]
+    [Authorize]
+    public async Task<IActionResult> CheckOutParticipant(
+        Guid participantId,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            await _tournamentService.CheckOutParticipantAsync(
+                participantId,
+                GetUserId(),
+                GetUserRole(),
+                cancellationToken);
+
+            return NoContent();
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new { error = ex.Message });
+        }
+        catch (UnauthorizedAccessException)
+        {
+            return Forbid();
+        }
+    }
+
+    [HttpPatch("participants/{participantId}/mark-paid")]
+    [Authorize]
+    public async Task<IActionResult> MarkParticipantAsPaid(
+        Guid participantId,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            await _tournamentService.MarkParticipantAsPaidAsync(
+                participantId,
+                GetUserId(),
+                GetUserRole(),
+                cancellationToken);
+
+            return NoContent();
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new { error = ex.Message });
+        }
+        catch (UnauthorizedAccessException)
+        {
+            return Forbid();
+        }
+    }
+
+    [HttpPatch("participants/{participantId}/mark-unpaid")]
+    [Authorize]
+    public async Task<IActionResult> MarkParticipantAsUnpaid(
+        Guid participantId,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            await _tournamentService.MarkParticipantAsUnpaidAsync(
+                participantId,
+                GetUserId(),
+                GetUserRole(),
+                cancellationToken);
+
+            return NoContent();
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new { error = ex.Message });
+        }
+        catch (UnauthorizedAccessException)
+        {
+            return Forbid();
+        }
+    }
+
     [HttpPost("{id}/stages")]
     [Authorize]
     public async Task<ActionResult<StageResponse>> CreateStage(
@@ -177,6 +281,41 @@ public class TournamentsController : ControllerBase
     {
         var stages = await _tournamentService.GetStagesAsync(id, cancellationToken);
         return Ok(stages);
+    }
+
+    [HttpPost("stages/{stageId}/rounds/generate")]
+    [Authorize]
+    public async Task<ActionResult<RoundResponse>> GenerateRound(
+        Guid stageId,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            var response = await _tournamentService.GenerateRoundAsync(stageId, cancellationToken);
+            return CreatedAtAction(nameof(GetRoundsByStage), new { stageId }, response);
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new { error = ex.Message });
+        }
+    }
+
+    [HttpGet("stages/{stageId}/rounds")]
+    public async Task<ActionResult<List<RoundResponse>>> GetRoundsByStage(
+        Guid stageId,
+        CancellationToken cancellationToken)
+    {
+        var rounds = await _tournamentService.GetRoundsByStageAsync(stageId, cancellationToken);
+        return Ok(rounds);
+    }
+
+    [HttpGet("rounds/{roundId}/matches")]
+    public async Task<ActionResult<List<MatchResponse>>> GetMatchesByRound(
+        Guid roundId,
+        CancellationToken cancellationToken)
+    {
+        var matches = await _tournamentService.GetMatchesByRoundAsync(roundId, cancellationToken);
+        return Ok(matches);
     }
 
     private Guid GetUserId()

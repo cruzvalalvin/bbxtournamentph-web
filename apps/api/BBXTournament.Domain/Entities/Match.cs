@@ -6,24 +6,29 @@ public class Match
 {
     public Guid Id { get; private set; }
     public Guid TournamentStageId { get; private set; }
+    public Guid TournamentRoundId { get; private set; }
     public int RoundNumber { get; private set; }
     public int MatchNumber { get; private set; }
     public Guid? Player1Id { get; private set; }
     public Guid? Player2Id { get; private set; }
-    public Guid? WinnerId { get; private set; }
-    public Guid? LoserId { get; private set; }
-    public int? Score1 { get; private set; }
-    public int? Score2 { get; private set; }
+    public int? Player1Score { get; private set; }
+    public int? Player2Score { get; private set; }
+    public Guid? WinnerParticipantId { get; private set; }
+    public Guid? LoserParticipantId { get; private set; }
+    public Guid? JudgeUserId { get; private set; }
     public bool IsBye { get; private set; }
     public MatchStatus Status { get; private set; }
+    public DateTime? CompletedAt { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
     // Navigation properties
     public TournamentStage TournamentStage { get; private set; } = null!;
+    public TournamentRound TournamentRound { get; private set; } = null!;
     public TournamentParticipant? Player1 { get; private set; }
     public TournamentParticipant? Player2 { get; private set; }
-    public TournamentParticipant? Winner { get; private set; }
-    public TournamentParticipant? Loser { get; private set; }
+    public TournamentParticipant? WinnerParticipant { get; private set; }
+    public TournamentParticipant? LoserParticipant { get; private set; }
+    public User? JudgeUser { get; private set; }
 
     private Match()
     {
@@ -31,6 +36,7 @@ public class Match
 
     public Match(
         Guid tournamentStageId,
+        Guid tournamentRoundId,
         int roundNumber,
         int matchNumber,
         Guid? player1Id = null,
@@ -39,6 +45,7 @@ public class Match
     {
         Id = Guid.NewGuid();
         TournamentStageId = tournamentStageId;
+        TournamentRoundId = tournamentRoundId;
         RoundNumber = roundNumber;
         MatchNumber = matchNumber;
         Player1Id = player1Id;
@@ -79,7 +86,7 @@ public class Match
         Status = MatchStatus.Ongoing;
     }
 
-    public void ReportScore(int score1, int score2)
+    public void ReportScore(int score1, int score2, Guid? judgeUserId = null)
     {
         if (Status == MatchStatus.Completed)
         {
@@ -90,45 +97,50 @@ public class Match
             throw new InvalidOperationException("Both players must be assigned before reporting score.");
         }
 
-        Score1 = score1;
-        Score2 = score2;
+        Player1Score = score1;
+        Player2Score = score2;
+        JudgeUserId = judgeUserId;
 
         if (score1 > score2)
         {
-            WinnerId = Player1Id;
-            LoserId = Player2Id;
+            WinnerParticipantId = Player1Id;
+            LoserParticipantId = Player2Id;
         }
         else if (score2 > score1)
         {
-            WinnerId = Player2Id;
-            LoserId = Player1Id;
+            WinnerParticipantId = Player2Id;
+            LoserParticipantId = Player1Id;
         }
         else
         {
             // Draw - no winner/loser
-            WinnerId = null;
-            LoserId = null;
+            WinnerParticipantId = null;
+            LoserParticipantId = null;
         }
 
         Status = MatchStatus.Completed;
+        CompletedAt = DateTime.UtcNow;
     }
 
-    public void MarkAsBye(Guid winnerId)
+    public void MarkAsBye(Guid winnerParticipantId)
     {
         if (!IsBye)
         {
             throw new InvalidOperationException("This match is not marked as a bye.");
         }
-        WinnerId = winnerId;
+        WinnerParticipantId = winnerParticipantId;
         Status = MatchStatus.Completed;
+        CompletedAt = DateTime.UtcNow;
     }
 
     public void Reset()
     {
-        Score1 = null;
-        Score2 = null;
-        WinnerId = null;
-        LoserId = null;
+        Player1Score = null;
+        Player2Score = null;
+        WinnerParticipantId = null;
+        LoserParticipantId = null;
+        JudgeUserId = null;
+        CompletedAt = null;
         Status = MatchStatus.Pending;
     }
 }

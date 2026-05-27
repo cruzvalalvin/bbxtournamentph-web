@@ -573,6 +573,98 @@
         }
       }
     },
+    "/tournaments/participants/{participantId}/checkin": {
+      "patch": {
+        "tags": [
+          "Tournaments"
+        ],
+        "parameters": [
+          {
+            "name": "participantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/tournaments/participants/{participantId}/checkout": {
+      "patch": {
+        "tags": [
+          "Tournaments"
+        ],
+        "parameters": [
+          {
+            "name": "participantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/tournaments/participants/{participantId}/mark-paid": {
+      "patch": {
+        "tags": [
+          "Tournaments"
+        ],
+        "parameters": [
+          {
+            "name": "participantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/tournaments/participants/{participantId}/mark-unpaid": {
+      "patch": {
+        "tags": [
+          "Tournaments"
+        ],
+        "parameters": [
+          {
+            "name": "participantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/tournaments/{id}/stages": {
       "post": {
         "tags": [
@@ -671,6 +763,144 @@
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/StageResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tournaments/stages/{stageId}/rounds/generate": {
+      "post": {
+        "tags": [
+          "Tournaments"
+        ],
+        "parameters": [
+          {
+            "name": "stageId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoundResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoundResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoundResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tournaments/stages/{stageId}/rounds": {
+      "get": {
+        "tags": [
+          "Tournaments"
+        ],
+        "parameters": [
+          {
+            "name": "stageId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RoundResponse"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RoundResponse"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RoundResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tournaments/rounds/{roundId}/matches": {
+      "get": {
+        "tags": [
+          "Tournaments"
+        ],
+        "parameters": [
+          {
+            "name": "roundId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MatchResponse"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MatchResponse"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MatchResponse"
                   }
                 }
               }
@@ -938,6 +1168,103 @@
         },
         "additionalProperties": false
       },
+      "MatchResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "tournamentStageId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "tournamentRoundId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "roundNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "matchNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "player1Id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "player1DisplayName": {
+            "type": "string",
+            "nullable": true
+          },
+          "player2Id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "player2DisplayName": {
+            "type": "string",
+            "nullable": true
+          },
+          "player1Score": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "player2Score": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "winnerParticipantId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "winnerDisplayName": {
+            "type": "string",
+            "nullable": true
+          },
+          "loserParticipantId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "judgeUserId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "isBye": {
+            "type": "boolean"
+          },
+          "status": {
+            "$ref": "#/components/schemas/MatchStatus"
+          },
+          "completedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "MatchStatus": {
+        "enum": [
+          1,
+          2,
+          3
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
       "ParticipantResponse": {
         "type": "object",
         "properties": {
@@ -1021,6 +1348,57 @@
           }
         },
         "additionalProperties": false
+      },
+      "RoundResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "tournamentStageId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "roundNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "status": {
+            "$ref": "#/components/schemas/RoundStatus"
+          },
+          "startedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "completedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "matches": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MatchResponse"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RoundStatus": {
+        "enum": [
+          1,
+          2,
+          3
+        ],
+        "type": "integer",
+        "format": "int32"
       },
       "StageFormatType": {
         "enum": [

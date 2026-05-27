@@ -18,6 +18,7 @@ public class TournamentStage
 
     // Navigation properties
     public Tournament Tournament { get; private set; } = null!;
+    public ICollection<TournamentRound> Rounds { get; private set; } = new List<TournamentRound>();
     public ICollection<Match> Matches { get; private set; } = new List<Match>();
     public ICollection<Standing> Standings { get; private set; } = new List<Standing>();
 

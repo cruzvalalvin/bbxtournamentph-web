@@ -15,6 +15,9 @@ public class MatchConfiguration : IEntityTypeConfiguration<Match>
         builder.Property(m => m.TournamentStageId)
             .IsRequired();
 
+        builder.Property(m => m.TournamentRoundId)
+            .IsRequired();
+
         builder.Property(m => m.RoundNumber)
             .IsRequired();
 
@@ -25,21 +28,24 @@ public class MatchConfiguration : IEntityTypeConfiguration<Match>
 
         builder.Property(m => m.Player2Id);
 
-        builder.Property(m => m.WinnerId);
+        builder.Property(m => m.Player1Score);
 
-        builder.Property(m => m.LoserId);
+        builder.Property(m => m.Player2Score);
 
-        builder.Property(m => m.Score1);
+        builder.Property(m => m.WinnerParticipantId);
 
-        builder.Property(m => m.Score2);
+        builder.Property(m => m.LoserParticipantId);
+
+        builder.Property(m => m.JudgeUserId);
 
         builder.Property(m => m.IsBye)
             .IsRequired();
 
         builder.Property(m => m.Status)
-            .HasConversion<string>()
-            .IsRequired()
-            .HasMaxLength(50);
+            .HasConversion<int>()
+            .IsRequired();
+
+        builder.Property(m => m.CompletedAt);
 
         builder.Property(m => m.CreatedAt)
             .IsRequired();
@@ -49,6 +55,11 @@ public class MatchConfiguration : IEntityTypeConfiguration<Match>
             .WithMany(ts => ts.Matches)
             .HasForeignKey(m => m.TournamentStageId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasOne(m => m.TournamentRound)
+            .WithMany(r => r.Matches)
+            .HasForeignKey(m => m.TournamentRoundId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(m => m.Player1)
             .WithMany()
@@ -60,15 +71,24 @@ public class MatchConfiguration : IEntityTypeConfiguration<Match>
             .HasForeignKey(m => m.Player2Id)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne(m => m.Winner)
+        builder.HasOne(m => m.WinnerParticipant)
             .WithMany()
-            .HasForeignKey(m => m.WinnerId)
+            .HasForeignKey(m => m.WinnerParticipantId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne(m => m.Loser)
+        builder.HasOne(m => m.LoserParticipant)
             .WithMany()
-            .HasForeignKey(m => m.LoserId)
+            .HasForeignKey(m => m.LoserParticipantId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(m => m.JudgeUser)
+            .WithMany()
+            .HasForeignKey(m => m.JudgeUserId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // Indexes
+        builder.HasIndex(m => m.TournamentStageId);
+        builder.HasIndex(m => m.TournamentRoundId);
     }
 }
 

@@ -152,13 +152,19 @@ namespace BBXTournament.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTime?>("CompletedAt")
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("IsBye")
                         .HasColumnType("INTEGER");
 
-                    b.Property<Guid?>("LoserId")
+                    b.Property<Guid?>("JudgeUserId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid?>("LoserParticipantId")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("MatchNumber")
@@ -167,40 +173,45 @@ namespace BBXTournament.Infrastructure.Migrations
                     b.Property<Guid?>("Player1Id")
                         .HasColumnType("TEXT");
 
+                    b.Property<int?>("Player1Score")
+                        .HasColumnType("INTEGER");
+
                     b.Property<Guid?>("Player2Id")
                         .HasColumnType("TEXT");
+
+                    b.Property<int?>("Player2Score")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("RoundNumber")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("Score1")
+                    b.Property<int>("Status")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("Score2")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasMaxLength(50)
+                    b.Property<Guid>("TournamentRoundId")
                         .HasColumnType("TEXT");
 
                     b.Property<Guid>("TournamentStageId")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("WinnerId")
+                    b.Property<Guid?>("WinnerParticipantId")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LoserId");
+                    b.HasIndex("JudgeUserId");
+
+                    b.HasIndex("LoserParticipantId");
 
                     b.HasIndex("Player1Id");
 
                     b.HasIndex("Player2Id");
 
+                    b.HasIndex("TournamentRoundId");
+
                     b.HasIndex("TournamentStageId");
 
-                    b.HasIndex("WinnerId");
+                    b.HasIndex("WinnerParticipantId");
 
                     b.ToTable("Matches", (string)null);
                 });
@@ -374,6 +385,40 @@ namespace BBXTournament.Infrastructure.Migrations
                     b.ToTable("TournamentParticipants", (string)null);
                 });
 
+            modelBuilder.Entity("BBXTournament.Domain.Entities.TournamentRound", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("CompletedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("RoundNumber")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("StartedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<Guid>("TournamentStageId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TournamentStageId");
+
+                    b.HasIndex("TournamentStageId", "RoundNumber")
+                        .IsUnique();
+
+                    b.ToTable("TournamentRounds", (string)null);
+                });
+
             modelBuilder.Entity("BBXTournament.Domain.Entities.TournamentStage", b =>
                 {
                     b.Property<Guid>("Id")
@@ -529,9 +574,14 @@ namespace BBXTournament.Infrastructure.Migrations
 
             modelBuilder.Entity("BBXTournament.Domain.Entities.Match", b =>
                 {
-                    b.HasOne("BBXTournament.Domain.Entities.TournamentParticipant", "Loser")
+                    b.HasOne("BBXTournament.Domain.Entities.User", "JudgeUser")
                         .WithMany()
-                        .HasForeignKey("LoserId")
+                        .HasForeignKey("JudgeUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("BBXTournament.Domain.Entities.TournamentParticipant", "LoserParticipant")
+                        .WithMany()
+                        .HasForeignKey("LoserParticipantId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("BBXTournament.Domain.Entities.TournamentParticipant", "Player1")
@@ -544,26 +594,36 @@ namespace BBXTournament.Infrastructure.Migrations
                         .HasForeignKey("Player2Id")
                         .OnDelete(DeleteBehavior.Restrict);
 
+                    b.HasOne("BBXTournament.Domain.Entities.TournamentRound", "TournamentRound")
+                        .WithMany("Matches")
+                        .HasForeignKey("TournamentRoundId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("BBXTournament.Domain.Entities.TournamentStage", "TournamentStage")
                         .WithMany("Matches")
                         .HasForeignKey("TournamentStageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BBXTournament.Domain.Entities.TournamentParticipant", "Winner")
+                    b.HasOne("BBXTournament.Domain.Entities.TournamentParticipant", "WinnerParticipant")
                         .WithMany()
-                        .HasForeignKey("WinnerId")
+                        .HasForeignKey("WinnerParticipantId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.Navigation("Loser");
+                    b.Navigation("JudgeUser");
+
+                    b.Navigation("LoserParticipant");
 
                     b.Navigation("Player1");
 
                     b.Navigation("Player2");
 
+                    b.Navigation("TournamentRound");
+
                     b.Navigation("TournamentStage");
 
-                    b.Navigation("Winner");
+                    b.Navigation("WinnerParticipant");
                 });
 
             modelBuilder.Entity("BBXTournament.Domain.Entities.Standing", b =>
@@ -622,6 +682,17 @@ namespace BBXTournament.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("BBXTournament.Domain.Entities.TournamentRound", b =>
+                {
+                    b.HasOne("BBXTournament.Domain.Entities.TournamentStage", "TournamentStage")
+                        .WithMany("Rounds")
+                        .HasForeignKey("TournamentStageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TournamentStage");
+                });
+
             modelBuilder.Entity("BBXTournament.Domain.Entities.TournamentStage", b =>
                 {
                     b.HasOne("BBXTournament.Domain.Entities.Tournament", "Tournament")
@@ -647,9 +718,16 @@ namespace BBXTournament.Infrastructure.Migrations
                     b.Navigation("Stages");
                 });
 
+            modelBuilder.Entity("BBXTournament.Domain.Entities.TournamentRound", b =>
+                {
+                    b.Navigation("Matches");
+                });
+
             modelBuilder.Entity("BBXTournament.Domain.Entities.TournamentStage", b =>
                 {
                     b.Navigation("Matches");
+
+                    b.Navigation("Rounds");
 
                     b.Navigation("Standings");
                 });

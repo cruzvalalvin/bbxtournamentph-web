@@ -57,6 +57,11 @@ public class TournamentParticipant
         IsPaid = true;
     }
 
+    public void UnmarkAsPaid()
+    {
+        IsPaid = false;
+    }
+
     public void CheckIn()
     {
         CheckedIn = true;

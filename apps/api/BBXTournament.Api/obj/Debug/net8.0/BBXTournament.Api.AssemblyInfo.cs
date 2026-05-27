@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BBXTournament.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1b4fcc7bab63590f2c4e6c06c61ffc1f12ba22c1")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+887dc61988cd8b3d82c9e89282fe5de14c9a9c04")]
 [assembly: System.Reflection.AssemblyProductAttribute("BBXTournament.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BBXTournament.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

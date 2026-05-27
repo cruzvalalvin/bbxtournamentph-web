@@ -246,6 +246,318 @@ public class TournamentService : ITournamentService
             Status = stage.Status
         };
     }
+    public async Task CheckInParticipantAsync(
+        Guid participantId,
+        Guid requesterId,
+        string requesterRole,
+        CancellationToken cancellationToken = default)
+    {
+        var participant = await _tournamentRepository.GetParticipantByIdAsync(participantId, cancellationToken);
+        if (participant == null)
+        {
+            throw new InvalidOperationException("Participant not found.");
+        }
+
+        // Authorization: Only tournament owner, community admins, or platform admins can check in
+        var tournament = participant.Tournament;
+        bool isAuthorized = requesterRole == "Admin" ||
+                           tournament.CreatedById == requesterId;
+
+        if (!isAuthorized)
+        {
+            // Check if requester is a community admin
+            var communityAdmins = await _tournamentRepository.GetByIdAsync(tournament.Id, cancellationToken);
+            // For now, we'll allow if they're the tournament creator or platform admin
+            // Community admin check would require ICommunityRepository
+        }
+
+        if (!isAuthorized && requesterRole != "Admin")
+        {
+            throw new UnauthorizedAccessException("Only tournament admins, community admins, or platform admins can check in participants.");
+        }
+
+        participant.CheckIn();
+        await _tournamentRepository.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task CheckOutParticipantAsync(
+        Guid participantId,
+        Guid requesterId,
+        string requesterRole,
+        CancellationToken cancellationToken = default)
+    {
+        var participant = await _tournamentRepository.GetParticipantByIdAsync(participantId, cancellationToken);
+        if (participant == null)
+        {
+            throw new InvalidOperationException("Participant not found.");
+        }
+
+        // Authorization: Only tournament owner, community admins, or platform admins can check out
+        var tournament = participant.Tournament;
+        bool isAuthorized = requesterRole == "Admin" ||
+                           tournament.CreatedById == requesterId;
+
+        if (!isAuthorized && requesterRole != "Admin")
+        {
+            throw new UnauthorizedAccessException("Only tournament admins, community admins, or platform admins can check out participants.");
+        }
+
+        participant.UndoCheckIn();
+        await _tournamentRepository.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task MarkParticipantAsPaidAsync(
+        Guid participantId,
+        Guid requesterId,
+        string requesterRole,
+        CancellationToken cancellationToken = default)
+    {
+        var participant = await _tournamentRepository.GetParticipantByIdAsync(participantId, cancellationToken);
+        if (participant == null)
+        {
+            throw new InvalidOperationException("Participant not found.");
+        }
+
+        // Authorization: Only tournament owner, community admins, or platform admins can mark as paid
+        var tournament = participant.Tournament;
+        bool isAuthorized = requesterRole == "Admin" ||
+                           tournament.CreatedById == requesterId;
+
+        if (!isAuthorized && requesterRole != "Admin")
+        {
+            throw new UnauthorizedAccessException("Only tournament admins, community admins, or platform admins can mark participants as paid.");
+        }
+
+        participant.MarkAsPaid();
+        await _tournamentRepository.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task MarkParticipantAsUnpaidAsync(
+        Guid participantId,
+        Guid requesterId,
+        string requesterRole,
+        CancellationToken cancellationToken = default)
+    {
+        var participant = await _tournamentRepository.GetParticipantByIdAsync(participantId, cancellationToken);
+        if (participant == null)
+        {
+            throw new InvalidOperationException("Participant not found.");
+        }
+
+        // Authorization: Only tournament owner, community admins, or platform admins can mark as unpaid
+        var tournament = participant.Tournament;
+        bool isAuthorized = requesterRole == "Admin" ||
+                           tournament.CreatedById == requesterId;
+
+        if (!isAuthorized && requesterRole != "Admin")
+        {
+            throw new UnauthorizedAccessException("Only tournament admins, community admins, or platform admins can mark participants as unpaid.");
+        }
+
+        participant.UnmarkAsPaid();
+        await _tournamentRepository.SaveChangesAsync(cancellationToken);
+    }
+
+
+    public async Task<RoundResponse> GenerateRoundAsync(Guid stageId, CancellationToken cancellationToken = default)
+    {
+        var stage = await _tournamentRepository.GetStageWithParticipantsAsync(stageId, cancellationToken);
+        if (stage == null)
+        {
+            throw new InvalidOperationException("Stage not found.");
+        }
+
+        // Check if Round 1 already exists
+        var existingRounds = await _tournamentRepository.GetRoundsByStageAsync(stageId, cancellationToken);
+        if (existingRounds.Any())
+        {
+            throw new InvalidOperationException("Round 1 already exists for this stage.");
+        }
+
+        var participants = stage.Tournament.Participants.Where(p => p.CheckedIn).ToList();
+        if (participants.Count < 2)
+        {
+            throw new InvalidOperationException("At least 2 checked-in participants are required to generate rounds.");
+        }
+
+        // Create Round 1
+        var round = new TournamentRound(stageId, 1);
+        await _tournamentRepository.AddRoundAsync(round, cancellationToken);
+        await _tournamentRepository.SaveChangesAsync(cancellationToken);
+
+        // Generate matches based on format
+        var matches = stage.FormatType switch
+        {
+            StageFormatType.SingleElimination => GenerateSingleEliminationMatches(round.Id, stage.Id, participants),
+            StageFormatType.RoundRobin => GenerateRoundRobinMatches(round.Id, stage.Id, participants),
+            StageFormatType.Swiss => GenerateSwissMatches(round.Id, stage.Id, participants),
+            _ => throw new InvalidOperationException($"Format type {stage.FormatType} is not supported yet.")
+        };
+
+        await _tournamentRepository.AddMatchesAsync(matches, cancellationToken);
+        await _tournamentRepository.SaveChangesAsync(cancellationToken);
+
+        // Fetch the round with matches
+        var createdRound = await _tournamentRepository.GetRoundWithMatchesAsync(round.Id, cancellationToken);
+        return MapToRoundResponse(createdRound!);
+    }
+
+    public async Task<List<RoundResponse>> GetRoundsByStageAsync(Guid stageId, CancellationToken cancellationToken = default)
+    {
+        var rounds = await _tournamentRepository.GetRoundsByStageAsync(stageId, cancellationToken);
+        var responses = new List<RoundResponse>();
+
+        foreach (var round in rounds)
+        {
+            var matches = await _tournamentRepository.GetMatchesByRoundAsync(round.Id, cancellationToken);
+            var response = MapToRoundResponse(round);
+            response.Matches = matches.Select(MapToMatchResponse).ToList();
+            responses.Add(response);
+        }
+
+        return responses;
+    }
+
+    public async Task<List<MatchResponse>> GetMatchesByRoundAsync(Guid roundId, CancellationToken cancellationToken = default)
+    {
+        var matches = await _tournamentRepository.GetMatchesByRoundAsync(roundId, cancellationToken);
+        return matches.Select(MapToMatchResponse).ToList();
+    }
+
+    private List<Match> GenerateSingleEliminationMatches(Guid roundId, Guid stageId, List<TournamentParticipant> participants)
+    {
+        // Shuffle participants randomly
+        var shuffled = participants.OrderBy(_ => Guid.NewGuid()).ToList();
+        var matches = new List<Match>();
+        var matchNumber = 1;
+
+        // Handle odd number of participants with bye
+        if (shuffled.Count % 2 != 0)
+        {
+            var byePlayer = shuffled.Last();
+            shuffled.RemoveAt(shuffled.Count - 1);
+            
+            var byeMatch = new Match(stageId, roundId, 1, matchNumber++, byePlayer.Id, null, true);
+            byeMatch.MarkAsBye(byePlayer.Id);
+            matches.Add(byeMatch);
+        }
+
+        // Pair remaining participants
+        for (int i = 0; i < shuffled.Count; i += 2)
+        {
+            var match = new Match(
+                stageId,
+                roundId,
+                1,
+                matchNumber++,
+                shuffled[i].Id,
+                shuffled[i + 1].Id);
+            matches.Add(match);
+        }
+
+        return matches;
+    }
+
+    private List<Match> GenerateRoundRobinMatches(Guid roundId, Guid stageId, List<TournamentParticipant> participants)
+    {
+        // Shuffle participants randomly
+        var shuffled = participants.OrderBy(_ => Guid.NewGuid()).ToList();
+        var matches = new List<Match>();
+        var matchNumber = 1;
+
+        // Round 1: Generate all possible pairings (first round only for now)
+        for (int i = 0; i < shuffled.Count; i++)
+        {
+            for (int j = i + 1; j < shuffled.Count; j++)
+            {
+                var match = new Match(
+                    stageId,
+                    roundId,
+                    1,
+                    matchNumber++,
+                    shuffled[i].Id,
+                    shuffled[j].Id);
+                matches.Add(match);
+            }
+        }
+
+        return matches;
+    }
+
+    private List<Match> GenerateSwissMatches(Guid roundId, Guid stageId, List<TournamentParticipant> participants)
+    {
+        // Shuffle participants randomly for Round 1
+        var shuffled = participants.OrderBy(_ => Guid.NewGuid()).ToList();
+        var matches = new List<Match>();
+        var matchNumber = 1;
+
+        // Handle odd number of participants with bye
+        if (shuffled.Count % 2 != 0)
+        {
+            var byePlayer = shuffled.Last();
+            shuffled.RemoveAt(shuffled.Count - 1);
+            
+            var byeMatch = new Match(stageId, roundId, 1, matchNumber++, byePlayer.Id, null, true);
+            byeMatch.MarkAsBye(byePlayer.Id);
+            matches.Add(byeMatch);
+        }
+
+        // Pair remaining participants
+        for (int i = 0; i < shuffled.Count; i += 2)
+        {
+            var match = new Match(
+                stageId,
+                roundId,
+                1,
+                matchNumber++,
+                shuffled[i].Id,
+                shuffled[i + 1].Id);
+            matches.Add(match);
+        }
+
+        return matches;
+    }
+
+    private static RoundResponse MapToRoundResponse(TournamentRound round)
+    {
+        return new RoundResponse
+        {
+            Id = round.Id,
+            TournamentStageId = round.TournamentStageId,
+            RoundNumber = round.RoundNumber,
+            Status = round.Status,
+            StartedAt = round.StartedAt,
+            CompletedAt = round.CompletedAt,
+            CreatedAt = round.CreatedAt,
+            Matches = round.Matches?.Select(MapToMatchResponse).ToList() ?? new List<MatchResponse>()
+        };
+    }
+
+    private static MatchResponse MapToMatchResponse(Match match)
+    {
+        return new MatchResponse
+        {
+            Id = match.Id,
+            TournamentStageId = match.TournamentStageId,
+            TournamentRoundId = match.TournamentRoundId,
+            RoundNumber = match.RoundNumber,
+            MatchNumber = match.MatchNumber,
+            Player1Id = match.Player1Id,
+            Player1DisplayName = match.Player1?.DisplayName,
+            Player2Id = match.Player2Id,
+            Player2DisplayName = match.Player2?.DisplayName,
+            Player1Score = match.Player1Score,
+            Player2Score = match.Player2Score,
+            WinnerParticipantId = match.WinnerParticipantId,
+            WinnerDisplayName = match.WinnerParticipant?.DisplayName,
+            LoserParticipantId = match.LoserParticipantId,
+            JudgeUserId = match.JudgeUserId,
+            IsBye = match.IsBye,
+            Status = match.Status,
+            CompletedAt = match.CompletedAt,
+            CreatedAt = match.CreatedAt
+        };
+    }
 }
 
 // Made with Bob

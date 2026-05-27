@@ -68,6 +68,14 @@ public class TournamentRepository : ITournamentRepository
             .FirstOrDefaultAsync(p => p.TournamentId == tournamentId && p.UserId == userId, cancellationToken);
     }
 
+    public async Task<TournamentParticipant?> GetParticipantByIdAsync(Guid participantId, CancellationToken cancellationToken = default)
+    {
+        return await _dbContext.TournamentParticipants
+            .Include(p => p.Tournament)
+                .ThenInclude(t => t.Community)
+            .FirstOrDefaultAsync(p => p.Id == participantId, cancellationToken);
+    }
+
     public async Task<List<TournamentParticipant>> GetParticipantsAsync(Guid tournamentId, CancellationToken cancellationToken = default)
     {
         return await _dbContext.TournamentParticipants
@@ -91,6 +99,15 @@ public class TournamentRepository : ITournamentRepository
             .FirstOrDefaultAsync(s => s.Id == stageId, cancellationToken);
     }
 
+    public async Task<TournamentStage?> GetStageWithParticipantsAsync(Guid stageId, CancellationToken cancellationToken = default)
+    {
+        return await _dbContext.TournamentStages
+            .Include(s => s.Tournament)
+                .ThenInclude(t => t.Participants)
+            .AsNoTracking()
+            .FirstOrDefaultAsync(s => s.Id == stageId, cancellationToken);
+    }
+
     public async Task<List<TournamentStage>> GetStagesAsync(Guid tournamentId, CancellationToken cancellationToken = default)
     {
         return await _dbContext.TournamentStages
@@ -109,6 +126,63 @@ public class TournamentRepository : ITournamentRepository
     {
         return await _dbContext.TournamentStages
             .AnyAsync(s => s.TournamentId == tournamentId && s.StageOrder == stageOrder, cancellationToken);
+    }
+
+    public async Task<TournamentRound?> GetRoundAsync(Guid roundId, CancellationToken cancellationToken = default)
+    {
+        return await _dbContext.TournamentRounds
+            .AsNoTracking()
+            .FirstOrDefaultAsync(r => r.Id == roundId, cancellationToken);
+    }
+
+    public async Task<List<TournamentRound>> GetRoundsByStageAsync(Guid stageId, CancellationToken cancellationToken = default)
+    {
+        return await _dbContext.TournamentRounds
+            .Where(r => r.TournamentStageId == stageId)
+            .AsNoTracking()
+            .OrderBy(r => r.RoundNumber)
+            .ToListAsync(cancellationToken);
+    }
+
+    public async Task<TournamentRound?> GetRoundWithMatchesAsync(Guid roundId, CancellationToken cancellationToken = default)
+    {
+        return await _dbContext.TournamentRounds
+            .Include(r => r.Matches)
+                .ThenInclude(m => m.Player1)
+            .Include(r => r.Matches)
+                .ThenInclude(m => m.Player2)
+            .Include(r => r.Matches)
+                .ThenInclude(m => m.WinnerParticipant)
+            .AsNoTracking()
+            .FirstOrDefaultAsync(r => r.Id == roundId, cancellationToken);
+    }
+
+    public async Task AddRoundAsync(TournamentRound round, CancellationToken cancellationToken = default)
+    {
+        await _dbContext.TournamentRounds.AddAsync(round, cancellationToken);
+    }
+
+    public async Task<List<Match>> GetMatchesByRoundAsync(Guid roundId, CancellationToken cancellationToken = default)
+    {
+        return await _dbContext.Matches
+            .Include(m => m.Player1)
+            .Include(m => m.Player2)
+            .Include(m => m.WinnerParticipant)
+            .Include(m => m.LoserParticipant)
+            .Where(m => m.TournamentRoundId == roundId)
+            .AsNoTracking()
+            .OrderBy(m => m.MatchNumber)
+            .ToListAsync(cancellationToken);
+    }
+
+    public async Task AddMatchAsync(Match match, CancellationToken cancellationToken = default)
+    {
+        await _dbContext.Matches.AddAsync(match, cancellationToken);
+    }
+
+    public async Task AddMatchesAsync(List<Match> matches, CancellationToken cancellationToken = default)
+    {
+        await _dbContext.Matches.AddRangeAsync(matches, cancellationToken);
     }
 
     public async Task SaveChangesAsync(CancellationToken cancellationToken = default)

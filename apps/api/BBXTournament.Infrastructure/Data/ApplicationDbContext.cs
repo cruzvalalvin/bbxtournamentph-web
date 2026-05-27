@@ -16,6 +16,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<CommunityMember> CommunityMembers => Set<CommunityMember>();
     public DbSet<Tournament> Tournaments => Set<Tournament>();
     public DbSet<TournamentStage> TournamentStages => Set<TournamentStage>();
+    public DbSet<TournamentRound> TournamentRounds => Set<TournamentRound>();
     public DbSet<TournamentParticipant> TournamentParticipants => Set<TournamentParticipant>();
     public DbSet<Match> Matches => Set<Match>();
     public DbSet<Standing> Standings => Set<Standing>();

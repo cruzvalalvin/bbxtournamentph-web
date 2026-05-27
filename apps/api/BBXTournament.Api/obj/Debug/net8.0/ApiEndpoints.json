@@ -384,6 +384,148 @@
     ]
   },
   {
+    "ContainingType": "BBXTournament.Api.Controllers.TournamentsController",
+    "Method": "CheckInParticipant",
+    "RelativePath": "tournaments/participants/{participantId}/checkin",
+    "HttpMethod": "PATCH",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "participantId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BBXTournament.Api.Controllers.TournamentsController",
+    "Method": "CheckOutParticipant",
+    "RelativePath": "tournaments/participants/{participantId}/checkout",
+    "HttpMethod": "PATCH",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "participantId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BBXTournament.Api.Controllers.TournamentsController",
+    "Method": "MarkParticipantAsPaid",
+    "RelativePath": "tournaments/participants/{participantId}/mark-paid",
+    "HttpMethod": "PATCH",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "participantId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BBXTournament.Api.Controllers.TournamentsController",
+    "Method": "MarkParticipantAsUnpaid",
+    "RelativePath": "tournaments/participants/{participantId}/mark-unpaid",
+    "HttpMethod": "PATCH",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "participantId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BBXTournament.Api.Controllers.TournamentsController",
+    "Method": "GetMatchesByRound",
+    "RelativePath": "tournaments/rounds/{roundId}/matches",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "roundId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[BBXTournament.Application.Contracts.Tournaments.MatchResponse, BBXTournament.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "BBXTournament.Api.Controllers.TournamentsController",
+    "Method": "GetRoundsByStage",
+    "RelativePath": "tournaments/stages/{stageId}/rounds",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "stageId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[BBXTournament.Application.Contracts.Tournaments.RoundResponse, BBXTournament.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "BBXTournament.Api.Controllers.TournamentsController",
+    "Method": "GenerateRound",
+    "RelativePath": "tournaments/stages/{stageId}/rounds/generate",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "stageId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "BBXTournament.Application.Contracts.Tournaments.RoundResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "BBXTournament.Api.Controllers.UsersController",
     "Method": "Me",
     "RelativePath": "users/me",

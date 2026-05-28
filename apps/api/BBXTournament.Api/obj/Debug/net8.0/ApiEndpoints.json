@@ -385,6 +385,63 @@
   },
   {
     "ContainingType": "BBXTournament.Api.Controllers.TournamentsController",
+    "Method": "GetTournamentStandings",
+    "RelativePath": "tournaments/{id}/standings",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[BBXTournament.Application.Contracts.Tournaments.StandingResponse, BBXTournament.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "BBXTournament.Api.Controllers.TournamentsController",
+    "Method": "SubmitMatchResult",
+    "RelativePath": "tournaments/matches/{matchId}/result",
+    "HttpMethod": "PATCH",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "matchId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "BBXTournament.Application.Contracts.Tournaments.SubmitMatchResultRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "BBXTournament.Application.Contracts.Tournaments.MatchResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "BBXTournament.Api.Controllers.TournamentsController",
     "Method": "CheckInParticipant",
     "RelativePath": "tournaments/participants/{participantId}/checkin",
     "HttpMethod": "PATCH",

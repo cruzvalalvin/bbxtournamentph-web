@@ -175,6 +175,23 @@ public class TournamentRepository : ITournamentRepository
             .ToListAsync(cancellationToken);
     }
 
+    public async Task<Match?> GetMatchByIdAsync(Guid matchId, CancellationToken cancellationToken = default)
+    {
+        return await _dbContext.Matches
+            .AsNoTracking()
+            .FirstOrDefaultAsync(m => m.Id == matchId, cancellationToken);
+    }
+
+    public async Task<Match?> GetMatchWithParticipantsAsync(Guid matchId, CancellationToken cancellationToken = default)
+    {
+        return await _dbContext.Matches
+            .Include(m => m.Player1)
+            .Include(m => m.Player2)
+            .Include(m => m.TournamentStage)
+                .ThenInclude(s => s.Tournament)
+            .FirstOrDefaultAsync(m => m.Id == matchId, cancellationToken);
+    }
+
     public async Task AddMatchAsync(Match match, CancellationToken cancellationToken = default)
     {
         await _dbContext.Matches.AddAsync(match, cancellationToken);
@@ -183,6 +200,17 @@ public class TournamentRepository : ITournamentRepository
     public async Task AddMatchesAsync(List<Match> matches, CancellationToken cancellationToken = default)
     {
         await _dbContext.Matches.AddRangeAsync(matches, cancellationToken);
+    }
+
+    public async Task<List<TournamentParticipant>> GetStandingsAsync(Guid tournamentId, CancellationToken cancellationToken = default)
+    {
+        return await _dbContext.TournamentParticipants
+            .Where(p => p.TournamentId == tournamentId)
+            .OrderByDescending(p => p.MatchWins)
+            .ThenByDescending(p => p.PointsDifference)
+            .ThenByDescending(p => p.PointsScored)
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
     }
 
     public async Task SaveChangesAsync(CancellationToken cancellationToken = default)

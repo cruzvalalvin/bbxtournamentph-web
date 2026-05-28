@@ -13,6 +13,14 @@ public class TournamentParticipant
     public bool CheckedIn { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
+    // Match statistics (Beyblade X scoring)
+    public int MatchWins { get; private set; }
+    public int MatchLosses { get; private set; }
+    public int PointsScored { get; private set; }
+    public int PointsAgainst { get; private set; }
+    public int PointsDifference { get; private set; }
+    public decimal BuchholzScore { get; private set; }
+
     // Navigation properties
     public Tournament Tournament { get; private set; } = null!;
     public User? User { get; private set; }
@@ -40,6 +48,14 @@ public class TournamentParticipant
         Seed = seed;
         CheckedIn = false;
         CreatedAt = DateTime.UtcNow;
+        
+        // Initialize statistics
+        MatchWins = 0;
+        MatchLosses = 0;
+        PointsScored = 0;
+        PointsAgainst = 0;
+        PointsDifference = 0;
+        BuchholzScore = 0;
     }
 
     public void Update(
@@ -75,6 +91,27 @@ public class TournamentParticipant
     public void UpdateSeed(int seed)
     {
         Seed = seed;
+    }
+
+    public void RecordWin(int pointsScored, int pointsAgainst)
+    {
+        MatchWins++;
+        PointsScored += pointsScored;
+        PointsAgainst += pointsAgainst;
+        PointsDifference = PointsScored - PointsAgainst;
+    }
+
+    public void RecordLoss(int pointsScored, int pointsAgainst)
+    {
+        MatchLosses++;
+        PointsScored += pointsScored;
+        PointsAgainst += pointsAgainst;
+        PointsDifference = PointsScored - PointsAgainst;
+    }
+
+    public void UpdateBuchholzScore(decimal buchholzScore)
+    {
+        BuchholzScore = buchholzScore;
     }
 }
 

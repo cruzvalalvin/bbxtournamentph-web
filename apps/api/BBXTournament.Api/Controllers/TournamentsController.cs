@@ -318,6 +318,56 @@ public class TournamentsController : ControllerBase
         return Ok(matches);
     }
 
+    [HttpPatch("matches/{matchId}/result")]
+    [Authorize]
+    public async Task<ActionResult<MatchResponse>> SubmitMatchResult(
+        Guid matchId,
+        [FromBody] SubmitMatchResultRequest request,
+        CancellationToken cancellationToken)
+    {
+        if (!ModelState.IsValid)
+        {
+            return ValidationProblem(ModelState);
+        }
+
+        try
+        {
+            var userId = GetUserId();
+            var response = await _tournamentService.SubmitMatchResultAsync(matchId, request, userId, cancellationToken);
+            return Ok(response);
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new { error = ex.Message });
+        }
+    }
+
+    [HttpGet("{id}/standings")]
+    public async Task<ActionResult<List<StandingResponse>>> GetTournamentStandings(
+        Guid id,
+        CancellationToken cancellationToken)
+    {
+        var standings = await _tournamentService.GetTournamentStandingsAsync(id, cancellationToken);
+        return Ok(standings);
+    }
+
+    [HttpPost("rounds/{roundId}/shuffle")]
+    [Authorize]
+    public async Task<ActionResult<RoundResponse>> ShuffleRound(
+        Guid roundId,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            var response = await _tournamentService.ShuffleRoundAsync(roundId, cancellationToken);
+            return Ok(response);
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new { error = ex.Message });
+        }
+    }
+
     private Guid GetUserId()
     {
         var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

@@ -38,6 +38,9 @@ public class MatchConfiguration : IEntityTypeConfiguration<Match>
 
         builder.Property(m => m.JudgeUserId);
 
+        builder.Property(m => m.JudgeNotes)
+            .HasMaxLength(1000);
+
         builder.Property(m => m.IsBye)
             .IsRequired();
 

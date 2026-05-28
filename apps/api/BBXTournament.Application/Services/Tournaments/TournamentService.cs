@@ -424,6 +424,189 @@ public class TournamentService : ITournamentService
         return matches.Select(MapToMatchResponse).ToList();
     }
 
+    public async Task<MatchResponse> SubmitMatchResultAsync(
+        Guid matchId,
+        SubmitMatchResultRequest request,
+        Guid judgeUserId,
+        CancellationToken cancellationToken = default)
+    {
+        // Get match with participants
+        var match = await _tournamentRepository.GetMatchWithParticipantsAsync(matchId, cancellationToken);
+        if (match == null)
+        {
+            throw new InvalidOperationException("Match not found.");
+        }
+
+        if (match.Status == MatchStatus.Completed)
+        {
+            throw new InvalidOperationException("Match is already completed.");
+        }
+
+        if (!match.Player1Id.HasValue || !match.Player2Id.HasValue)
+        {
+            throw new InvalidOperationException("Both players must be assigned before submitting result.");
+        }
+
+        // Beyblade X: Scores cannot be equal (no draws)
+        if (request.Player1Score == request.Player2Score)
+        {
+            throw new InvalidOperationException("Scores cannot be equal. In Beyblade X, there must be a winner.");
+        }
+
+        // Report the score
+        match.ReportScore(request.Player1Score, request.Player2Score, judgeUserId, request.JudgeNotes);
+
+        // Update participant statistics
+        var player1 = match.Player1!;
+        var player2 = match.Player2!;
+
+        if (request.Player1Score > request.Player2Score)
+        {
+            // Player 1 wins
+            player1.RecordWin(request.Player1Score, request.Player2Score);
+            player2.RecordLoss(request.Player2Score, request.Player1Score);
+        }
+        else
+        {
+            // Player 2 wins
+            player2.RecordWin(request.Player2Score, request.Player1Score);
+            player1.RecordLoss(request.Player1Score, request.Player2Score);
+        }
+
+        await _tournamentRepository.SaveChangesAsync(cancellationToken);
+
+        // Fetch updated match
+        var updatedMatch = await _tournamentRepository.GetMatchByIdAsync(matchId, cancellationToken);
+        return MapToMatchResponse(updatedMatch!);
+    }
+
+    public async Task<List<StandingResponse>> GetTournamentStandingsAsync(
+        Guid tournamentId,
+        CancellationToken cancellationToken = default)
+    {
+        var participants = await _tournamentRepository.GetStandingsAsync(tournamentId, cancellationToken);
+        
+        var standings = new List<StandingResponse>();
+        int currentRank = 1;
+        int position = 0;
+
+        TournamentParticipant? previousParticipant = null;
+
+        foreach (var participant in participants)
+        {
+            position++;
+
+            // Check if current participant has same stats as previous (tie condition)
+            if (previousParticipant != null &&
+                participant.MatchWins == previousParticipant.MatchWins &&
+                participant.PointsDifference == previousParticipant.PointsDifference &&
+                participant.PointsScored == previousParticipant.PointsScored)
+            {
+                // Same rank as previous (tied)
+                // currentRank stays the same
+            }
+            else
+            {
+                // Different stats, assign new rank based on position
+                currentRank = position;
+            }
+
+            standings.Add(new StandingResponse(
+                participant.Id,
+                participant.DisplayName,
+                participant.TeamName,
+                currentRank,
+                participant.MatchWins,
+                participant.MatchLosses,
+                participant.PointsScored,
+                participant.PointsAgainst,
+                participant.PointsDifference,
+                participant.BuchholzScore
+            ));
+
+            previousParticipant = participant;
+        }
+
+        return standings;
+    }
+
+    public async Task<RoundResponse> ShuffleRoundAsync(Guid roundId, CancellationToken cancellationToken = default)
+    {
+        // Get round with matches
+        var round = await _tournamentRepository.GetRoundWithMatchesAsync(roundId, cancellationToken);
+        if (round == null)
+        {
+            throw new InvalidOperationException("Round not found.");
+        }
+
+        // Validate: No match should be completed
+        if (round.Matches.Any(m => m.Status == MatchStatus.Completed))
+        {
+            throw new InvalidOperationException("Cannot shuffle round. One or more matches have already been completed.");
+        }
+
+        // Get all participant IDs from current matches (excluding byes)
+        var participantIds = new List<Guid>();
+        Guid? byeParticipantId = null;
+
+        foreach (var match in round.Matches)
+        {
+            if (match.IsBye)
+            {
+                // Store bye participant
+                byeParticipantId = match.Player1Id;
+            }
+            else
+            {
+                if (match.Player1Id.HasValue)
+                    participantIds.Add(match.Player1Id.Value);
+                if (match.Player2Id.HasValue)
+                    participantIds.Add(match.Player2Id.Value);
+            }
+        }
+
+        // Shuffle participants randomly
+        var shuffled = participantIds.OrderBy(_ => Guid.NewGuid()).ToList();
+
+        // Reset all existing matches
+        foreach (var match in round.Matches)
+        {
+            match.Reset();
+        }
+
+        // Reassign pairings
+        int matchIndex = 0;
+        
+        // Handle bye if exists
+        if (byeParticipantId.HasValue)
+        {
+            var byeMatch = round.Matches.FirstOrDefault(m => m.IsBye);
+            if (byeMatch != null)
+            {
+                byeMatch.AssignPlayer1(byeParticipantId.Value);
+                byeMatch.MarkAsBye(byeParticipantId.Value);
+            }
+        }
+
+        // Pair remaining participants
+        var regularMatches = round.Matches.Where(m => !m.IsBye).OrderBy(m => m.MatchNumber).ToList();
+        for (int i = 0; i < shuffled.Count && matchIndex < regularMatches.Count; i += 2)
+        {
+            if (i + 1 < shuffled.Count)
+            {
+                regularMatches[matchIndex].AssignPlayer1(shuffled[i]);
+                regularMatches[matchIndex].AssignPlayer2(shuffled[i + 1]);
+                matchIndex++;
+            }
+        }
+
+        await _tournamentRepository.SaveChangesAsync(cancellationToken);
+
+        // Fetch updated round
+        var updatedRound = await _tournamentRepository.GetRoundWithMatchesAsync(roundId, cancellationToken);
+        return MapToRoundResponse(updatedRound!);
+    }
+
     private List<Match> GenerateSingleEliminationMatches(Guid roundId, Guid stageId, List<TournamentParticipant> participants)
     {
         // Shuffle participants randomly

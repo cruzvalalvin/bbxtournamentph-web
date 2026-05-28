@@ -20,6 +20,9 @@ public interface ITournamentService
     Task<RoundResponse> GenerateRoundAsync(Guid stageId, CancellationToken cancellationToken = default);
     Task<List<RoundResponse>> GetRoundsByStageAsync(Guid stageId, CancellationToken cancellationToken = default);
     Task<List<MatchResponse>> GetMatchesByRoundAsync(Guid roundId, CancellationToken cancellationToken = default);
+    Task<MatchResponse> SubmitMatchResultAsync(Guid matchId, SubmitMatchResultRequest request, Guid judgeUserId, CancellationToken cancellationToken = default);
+    Task<List<StandingResponse>> GetTournamentStandingsAsync(Guid tournamentId, CancellationToken cancellationToken = default);
+    Task<RoundResponse> ShuffleRoundAsync(Guid roundId, CancellationToken cancellationToken = default);
 }
 
 // Made with Bob

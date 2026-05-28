@@ -3,6 +3,7 @@ using System;
 using BBXTournament.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BBXTournament.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260528111333_AddMatchResultAndStandingsFoundation")]
+    partial class AddMatchResultAndStandingsFoundation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.0");
@@ -373,6 +376,11 @@ namespace BBXTournament.Infrastructure.Migrations
                     b.Property<bool>("IsPaid")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("MatchDraws")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasDefaultValue(0);
+
                     b.Property<int>("MatchLosses")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER")
@@ -407,6 +415,11 @@ namespace BBXTournament.Infrastructure.Migrations
 
                     b.Property<Guid>("TournamentId")
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("TournamentPoints")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasDefaultValue(0);
 
                     b.Property<Guid?>("UserId")
                         .HasColumnType("TEXT");

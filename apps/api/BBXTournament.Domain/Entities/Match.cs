@@ -16,6 +16,7 @@ public class Match
     public Guid? WinnerParticipantId { get; private set; }
     public Guid? LoserParticipantId { get; private set; }
     public Guid? JudgeUserId { get; private set; }
+    public string? JudgeNotes { get; private set; }
     public bool IsBye { get; private set; }
     public MatchStatus Status { get; private set; }
     public DateTime? CompletedAt { get; private set; }
@@ -86,7 +87,7 @@ public class Match
         Status = MatchStatus.Ongoing;
     }
 
-    public void ReportScore(int score1, int score2, Guid? judgeUserId = null)
+    public void ReportScore(int score1, int score2, Guid? judgeUserId = null, string? judgeNotes = null)
     {
         if (Status == MatchStatus.Completed)
         {
@@ -100,6 +101,7 @@ public class Match
         Player1Score = score1;
         Player2Score = score2;
         JudgeUserId = judgeUserId;
+        JudgeNotes = judgeNotes;
 
         if (score1 > score2)
         {
@@ -140,6 +142,7 @@ public class Match
         WinnerParticipantId = null;
         LoserParticipantId = null;
         JudgeUserId = null;
+        JudgeNotes = null;
         CompletedAt = null;
         Status = MatchStatus.Pending;
     }

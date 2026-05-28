@@ -24,8 +24,11 @@ public interface ITournamentRepository
     Task<TournamentRound?> GetRoundWithMatchesAsync(Guid roundId, CancellationToken cancellationToken = default);
     Task AddRoundAsync(TournamentRound round, CancellationToken cancellationToken = default);
     Task<List<Match>> GetMatchesByRoundAsync(Guid roundId, CancellationToken cancellationToken = default);
+    Task<Match?> GetMatchByIdAsync(Guid matchId, CancellationToken cancellationToken = default);
+    Task<Match?> GetMatchWithParticipantsAsync(Guid matchId, CancellationToken cancellationToken = default);
     Task AddMatchAsync(Match match, CancellationToken cancellationToken = default);
     Task AddMatchesAsync(List<Match> matches, CancellationToken cancellationToken = default);
+    Task<List<TournamentParticipant>> GetStandingsAsync(Guid tournamentId, CancellationToken cancellationToken = default);
     Task SaveChangesAsync(CancellationToken cancellationToken = default);
 }
 

@@ -136,10 +136,10 @@ C:\Users\ValAlvinCruz\Desktop\bbxtournamentph\apps\api\BBXTournament.Api\obj\Deb
 C:\Users\ValAlvinCruz\Desktop\bbxtournamentph\apps\api\BBXTournament.Api\obj\Debug\net8.0\staticwebassets.build.json.cache
 C:\Users\ValAlvinCruz\Desktop\bbxtournamentph\apps\api\BBXTournament.Api\obj\Debug\net8.0\staticwebassets.development.json
 C:\Users\ValAlvinCruz\Desktop\bbxtournamentph\apps\api\BBXTournament.Api\obj\Debug\net8.0\staticwebassets.build.endpoints.json
-C:\Users\ValAlvinCruz\Desktop\bbxtournamentph\apps\api\BBXTournament.Api\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 C:\Users\ValAlvinCruz\Desktop\bbxtournamentph\apps\api\BBXTournament.Api\obj\Debug\net8.0\BBXTourn.213B1460.Up2Date
 C:\Users\ValAlvinCruz\Desktop\bbxtournamentph\apps\api\BBXTournament.Api\obj\Debug\net8.0\BBXTournament.Api.dll
 C:\Users\ValAlvinCruz\Desktop\bbxtournamentph\apps\api\BBXTournament.Api\obj\Debug\net8.0\refint\BBXTournament.Api.dll
 C:\Users\ValAlvinCruz\Desktop\bbxtournamentph\apps\api\BBXTournament.Api\obj\Debug\net8.0\BBXTournament.Api.pdb
 C:\Users\ValAlvinCruz\Desktop\bbxtournamentph\apps\api\BBXTournament.Api\obj\Debug\net8.0\BBXTournament.Api.genruntimeconfig.cache
 C:\Users\ValAlvinCruz\Desktop\bbxtournamentph\apps\api\BBXTournament.Api\obj\Debug\net8.0\ref\BBXTournament.Api.dll
+C:\Users\ValAlvinCruz\Desktop\bbxtournamentph\apps\api\BBXTournament.Api\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

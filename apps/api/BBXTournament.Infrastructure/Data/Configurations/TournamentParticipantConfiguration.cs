@@ -38,6 +38,32 @@ public class TournamentParticipantConfiguration : IEntityTypeConfiguration<Tourn
         builder.Property(tp => tp.CreatedAt)
             .IsRequired();
 
+        // Match statistics (Beyblade X scoring)
+        builder.Property(tp => tp.MatchWins)
+            .IsRequired()
+            .HasDefaultValue(0);
+
+        builder.Property(tp => tp.MatchLosses)
+            .IsRequired()
+            .HasDefaultValue(0);
+
+        builder.Property(tp => tp.PointsScored)
+            .IsRequired()
+            .HasDefaultValue(0);
+
+        builder.Property(tp => tp.PointsAgainst)
+            .IsRequired()
+            .HasDefaultValue(0);
+
+        builder.Property(tp => tp.PointsDifference)
+            .IsRequired()
+            .HasDefaultValue(0);
+
+        builder.Property(tp => tp.BuchholzScore)
+            .IsRequired()
+            .HasDefaultValue(0)
+            .HasPrecision(18, 2);
+
         // Relationships
         builder.HasOne(tp => tp.Tournament)
             .WithMany(t => t.Participants)

@@ -475,10 +475,10 @@ public class TournamentService : ITournamentService
             throw new InvalidOperationException("Both players must be assigned before submitting result.");
         }
 
-        // Beyblade X: Scores cannot be equal (no draws)
-        if (request.Player1Score == request.Player2Score)
+        // Validate scores: Only 0-0 is allowed for equal scores (double no-show)
+        if (request.Player1Score == request.Player2Score && request.Player1Score != 0)
         {
-            throw new InvalidOperationException("Scores cannot be equal. In Beyblade X, there must be a winner.");
+            throw new InvalidOperationException("Scores cannot be equal except for 0-0 (double no-show). In Beyblade X, there must be a winner.");
         }
 
         // Report the score
@@ -488,7 +488,14 @@ public class TournamentService : ITournamentService
         var player1 = match.Player1!;
         var player2 = match.Player2!;
 
-        if (request.Player1Score > request.Player2Score)
+        // Special case: 0-0 (double no-show / double loss)
+        if (request.Player1Score == 0 && request.Player2Score == 0)
+        {
+            // Both players get a loss, no points scored
+            player1.RecordLoss(0, 0);
+            player2.RecordLoss(0, 0);
+        }
+        else if (request.Player1Score > request.Player2Score)
         {
             // Player 1 wins
             player1.RecordWin(request.Player1Score, request.Player2Score);

@@ -142,4 +142,3 @@ C:\Users\ValAlvinCruz\Desktop\bbxtournamentph\apps\api\BBXTournament.Api\obj\Deb
 C:\Users\ValAlvinCruz\Desktop\bbxtournamentph\apps\api\BBXTournament.Api\obj\Debug\net8.0\BBXTournament.Api.pdb
 C:\Users\ValAlvinCruz\Desktop\bbxtournamentph\apps\api\BBXTournament.Api\obj\Debug\net8.0\BBXTournament.Api.genruntimeconfig.cache
 C:\Users\ValAlvinCruz\Desktop\bbxtournamentph\apps\api\BBXTournament.Api\obj\Debug\net8.0\ref\BBXTournament.Api.dll
-C:\Users\ValAlvinCruz\Desktop\bbxtournamentph\apps\api\BBXTournament.Api\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

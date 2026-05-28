@@ -124,6 +124,25 @@ public class TournamentService : ITournamentService
             }
         }
 
+        // Check if Round 2 or later has been generated in any stage
+        var stages = await _tournamentRepository.GetStagesAsync(tournamentId, cancellationToken);
+        bool round2OrLaterExists = false;
+
+        foreach (var stage in stages)
+        {
+            if (await _tournamentRepository.RoundExistsAsync(stage.Id, 2, cancellationToken))
+            {
+                round2OrLaterExists = true;
+                break;
+            }
+        }
+
+        // Validation: Cannot join if Round 2 or later has been generated
+        if (round2OrLaterExists)
+        {
+            throw new InvalidOperationException("Cannot join tournament. Participant registration is locked after Round 2 has been generated.");
+        }
+
         var participant = new TournamentParticipant(
             tournamentId,
             request.UserId,
@@ -131,6 +150,9 @@ public class TournamentService : ITournamentService
             request.TeamName,
             request.IsManualEntry,
             request.Seed);
+
+        // No auto-losses needed - participants can only join before Round 2 is generated
+        // They will be included in Round 1 or can join after Round 1 completes but before Round 2 generates
 
         await _tournamentRepository.AddParticipantAsync(participant, cancellationToken);
         await _tournamentRepository.SaveChangesAsync(cancellationToken);
@@ -437,9 +459,15 @@ public class TournamentService : ITournamentService
             throw new InvalidOperationException("Match not found.");
         }
 
-        if (match.Status == MatchStatus.Completed)
+        // Check if next round has been generated (round is locked)
+        var nextRoundExists = await _tournamentRepository.RoundExistsAsync(
+            match.TournamentStageId,
+            match.RoundNumber + 1,
+            cancellationToken);
+        
+        if (nextRoundExists)
         {
-            throw new InvalidOperationException("Match is already completed.");
+            throw new InvalidOperationException("Cannot edit match result. This round has been finalized by generating the next round.");
         }
 
         if (!match.Player1Id.HasValue || !match.Player2Id.HasValue)

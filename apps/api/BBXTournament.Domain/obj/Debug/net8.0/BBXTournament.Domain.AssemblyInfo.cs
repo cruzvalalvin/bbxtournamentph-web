@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BBXTournament.Domain")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+17fb55bc460866a8c9bc12b3732bcd84da088ec7")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a84375de21d519ec62585b5b7f0b663855757bcd")]
 [assembly: System.Reflection.AssemblyProductAttribute("BBXTournament.Domain")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BBXTournament.Domain")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

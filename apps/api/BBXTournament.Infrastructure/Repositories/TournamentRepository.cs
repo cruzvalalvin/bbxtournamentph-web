@@ -157,6 +157,12 @@ public class TournamentRepository : ITournamentRepository
             .FirstOrDefaultAsync(r => r.Id == roundId, cancellationToken);
     }
 
+    public async Task<bool> RoundExistsAsync(Guid stageId, int roundNumber, CancellationToken cancellationToken = default)
+    {
+        return await _dbContext.TournamentRounds
+            .AnyAsync(r => r.TournamentStageId == stageId && r.RoundNumber == roundNumber, cancellationToken);
+    }
+
     public async Task AddRoundAsync(TournamentRound round, CancellationToken cancellationToken = default)
     {
         await _dbContext.TournamentRounds.AddAsync(round, cancellationToken);

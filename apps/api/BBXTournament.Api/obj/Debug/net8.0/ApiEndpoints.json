@@ -532,6 +532,32 @@
   },
   {
     "ContainingType": "BBXTournament.Api.Controllers.TournamentsController",
+    "Method": "ShuffleRound",
+    "RelativePath": "tournaments/rounds/{roundId}/shuffle",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "roundId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "BBXTournament.Application.Contracts.Tournaments.RoundResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "BBXTournament.Api.Controllers.TournamentsController",
     "Method": "GetRoundsByStage",
     "RelativePath": "tournaments/stages/{stageId}/rounds",
     "HttpMethod": "GET",
